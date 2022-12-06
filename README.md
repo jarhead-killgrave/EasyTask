@@ -1,4 +1,4 @@
-#EasyTask
+# EasyTask
 
 ## Introduction
 EasyTask is a task management system that allows you to manage your tasks in a simple way. 
