@@ -1,4 +1,4 @@
-# EasyTask
+#EasyTask
 
 ## Introduction
 EasyTask is a task management system that allows you to manage your tasks in a simple way. 
@@ -38,6 +38,9 @@ npm install
 We have external dependencies, so we must install them. To do this, we must open the terminal and write the following command:
 ```bash
 npm install --save react-navigation
+```
+```bash
+npm install --save react-native
 ```
 
 ### Run the server
