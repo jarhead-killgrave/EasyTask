@@ -1,0 +1,49 @@
+directive @default(value: Boolean) on FIELD_DEFINITION
+directive @relation(type: String, direction: String) on FIELD_DEFINITION
+directive @unique on FIELD_DEFINITION
+directive @auth(rules: [AuthRule!]!) on OBJECT | FIELD_DEFINITION
+
+enum AuthRule {
+    allow
+    deny
+    owner
+    public
+    private
+}
+
+enum Operation {
+    create
+    update
+    delete
+    read
+}
+
+
+enum Role {
+    admin
+    owner
+    public
+}
+
+type User{
+    id: ID! @unique
+    name: String!
+    email: String!
+    password: String!
+}
+
+
+type Todo{
+    id: ID! @unique
+    content: String!
+    done: Boolean! @default(value: false)
+}
+
+type TodoList{
+    id: ID! @unique
+    name: String!
+    todos: [Todo!]! @relation(type: "CONTAINS", direction: "OUT")
+    owner: User! @relation(type: "OWNED_BY", direction: "OUT")
+}
+
+

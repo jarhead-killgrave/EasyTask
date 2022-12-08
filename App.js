@@ -1,20 +1,31 @@
+import React, {useState} from "react";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
+import {TokenContext, UsernameContext} from "./context/Context";
+import Navigation from "./navigation/Navigation";
+
+
 
 export default function App() {
+    const [token, setToken] = useState(null);
+    const [username, setUsername] = useState(null);
+
+    console.log("token value ",token);
+    console.log("username value ",username);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <UsernameContext.Provider value={[username, setUsername]}>
+        <TokenContext.Provider value={[token, setToken]}>
+            <Navigation/>
+        </TokenContext.Provider>
+    </UsernameContext.Provider>
+    );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+    },
 });

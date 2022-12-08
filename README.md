@@ -39,6 +39,9 @@ We have external dependencies, so we must install them. To do this, we must open
 ```bash
 npm install --save react-navigation
 ```
+```bash
+npm install --save react-native
+```
 
 ### Run the server
 To run the server, you must open the terminal and write the following command:
