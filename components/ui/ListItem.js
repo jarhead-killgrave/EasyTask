@@ -46,8 +46,16 @@ export default function ListItem(props = {data: [], deletableItem: false,
             />
         </View>
     );
-
-
-
-
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        marginTop: "5%",
+        padding: "5%",
+        backgroundColor: "#f5f5f5"
+    },
+});
