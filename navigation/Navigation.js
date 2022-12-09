@@ -3,7 +3,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {TokenContext} from "../context/Context";
 import HomeScreen from "../Screen/HomeScreen";
-import TodoLists from "../Screen/TodoLists";
+import TodoListsScreen from "../Screen/TodoListsScreen";
 import SignInScreen from "../Screen/SignInScreen";
 import SignUpScreen from "../Screen/signUpScreen";
 import SignOutScreen from "../Screen/SignOutScreen";
@@ -25,7 +25,7 @@ export default function Navigation(){
                 ) : (
                     <Tab.Navigator>
                         <Tab.Screen name="Home" component={HomeScreen}/>
-                        <Tab.Screen name="TodoLists" component={TodoLists}/>
+                        <Tab.Screen name="TodoLists" component={TodoListsScreen}/>
                         <Tab.Screen name="SignOut" component={SignOutScreen}/>
                     </Tab.Navigator>
                 )

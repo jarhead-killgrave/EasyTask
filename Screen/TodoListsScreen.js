@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {FlatList, StyleSheet, Text, View} from "react-native";
 import AddInput from "../components/ui/AddInput";
+import ListItem from "../components/ui/ListItem";
 
 
 /**
@@ -9,7 +10,7 @@ import AddInput from "../components/ui/AddInput";
  * @param props the properties of the component
  * @constructor the constructor of the component
  */
-export default function TodoLists(props) {
+export default function TodoListsScreen(props) {
     const [todoLists, setTodoLists] = useState([]);
     const [newTodoList, setNewTodoList] = useState("");
 
@@ -23,11 +24,7 @@ export default function TodoLists(props) {
 
     return (
         <View style={styles.container}>
-            <FlatList
-                data={todoLists}
-                renderItem={({item}) => <Text>{item.content}</Text>}
-                keyExtractor={(item, index) => index.toString()}
-            />
+            <ListItem data={todoLists}/>
             <AddInput text={newTodoList} setText={setNewTodoList} onSubmit={addTodoList} onFocus={() => { }}/>
 
         </View>
