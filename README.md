@@ -33,7 +33,7 @@ git clone
 ### Install the dependencies
 To install the dependencies, you must open the terminal and write the following command:
 ```bash
-npm install
+npm install --no-bin-links
 ```
 We have external dependencies, so we must install them. To do this, we must open the terminal and write the following command:
 ```bash
