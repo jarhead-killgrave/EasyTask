@@ -1,23 +1,22 @@
-type Task @model {
-    id: ID @id
-    title: String
-    contains: [Task] @relationship(type: "CONTAINS", direction: OUT)
-    owner: User @relationship(type: "OWNED_BY", direction: OUT)
+type Task{
+    id: ID! @id
+    content: String
+    belongsTo: TaskList @relationship(type: "BELONGS_TO", direction: OUT)
     done: Boolean @default(value: false)
 }
 
-type TaskList @model {
+extend type Task @auth(rules: [{ operations: [CREATE, READ, UPDATE, DELETE], OR : [{roles: ["admin"]}, {bind: { belongsTo: {owner:{id: "$jwt.sub" }}}, allow: { belongsTo: {owner:{id: "$jwt.sub" }}}}]}])
+
+type TaskList{
     id: ID @id
-    name: String
-    tasks: [Task] @relationship(type: "CONTAINS", direction: OUT)
+    title: String
+    #  contains: [Task] @relationship(type: "CONTAINS", direction: OUT)
     owner: User @relationship(type: "OWNED_BY", direction: OUT)
 }
 
-extend type Task @auth(rules: [{ operations: [CREATE, READ, UPDATE, DELETE], OR : [{roles: ["admin"]}, {bind: { owner:{id: "$jwt.sub" }}, allow: { owner:{id: "$jwt.sub" }}}]}])
-
 extend type TaskList @auth(rules: [{ operations: [CREATE, READ, UPDATE, DELETE], OR : [{roles: ["admin"]}, {bind: { owner:{id: "$jwt.sub" }}, allow: { owner:{id: "$jwt.sub" }}}]}])
 
-type User @model {
+type User{
     id: ID @id
     username: String!
     password: String! @private
@@ -27,15 +26,6 @@ type User @model {
 extend type User @auth(rules: [{ operations: [CREATE, READ, UPDATE, DELETE], OR: [{ roles: ["admin"] }, { allow: { id: "$jwt.sub" } }] }])
 
 type Mutation {
-    signUp(username: String!, password: String!): String! @auth
-    signIn(username: String!, password: String!): String! @auth
-    createTask(title: String!, owner: ID = "$jwt.sub", done: Boolean = false): Task
-    updateTask(id: ID!, title: String, done: Boolean): Task
-    deleteTask(id: ID!): Task
-}
-
-type Query {
-    me: User @auth(rules: [{ allow: ["$jwt.sub"] }])
-    myTasks: [Task] @auth(rules: [{ allow: ["$jwt.sub"] }])
-    myTaskLists: [TaskList] @auth(rules: [{ allow: ["$jwt.sub"] }])
+    signUp(username: String!, password: String!): String! ### JWT
+    signIn(username: String!, password: String!): String! ### JWT
 }
