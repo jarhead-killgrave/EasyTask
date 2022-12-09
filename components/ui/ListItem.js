@@ -1,12 +1,17 @@
-import React, {useState, useEffect} from "react";
-import {StyleSheet, FlatList, Text, View} from "react-native";
+import React, {useEffect, useState} from "react";
+import {FlatList, StyleSheet} from "react-native";
 import Item from "./Item";
+
 /**
  * The list of items
  * @param props the properties of the component
  */
-export default function ListItem(props = {data: [], deletableItem: false,
-    checkableItem: false, onItemDelete: () => {}, onItemCheck: () => {}}) {
+export default function ListItem(props = {
+    data: [], deletableItem: false,
+    checkableItem: false, onItemDelete: () => {
+    }, onItemCheck: () => {
+    }
+}) {
     const [items, setItems] = useState(props.data);
 
     // Update the items when the props change
@@ -34,22 +39,21 @@ export default function ListItem(props = {data: [], deletableItem: false,
     }
 
     return (
-        <View style={styles.container}>
-            <FlatList
-                data={items}
-                renderItem={({item}) => <Item
-                                            item={item} checkable={props.checkableItem} checked={item.checked}
-                                            _onCheck={checkItem} destructible={props.deletableItem} _onDelete={deleteItem}
-                                        />
-                }
-                keyExtractor={(item, index) => index.toString()}
+        <FlatList
+            style={styles.list}
+            data={items}
+            renderItem={({item}) => <Item
+                item={item} checkable={props.checkableItem} checked={item.checked}
+                _onCheck={checkItem} destructible={props.deletableItem} _onDelete={deleteItem}
             />
-        </View>
+            }
+            keyExtractor={(item, index) => index.toString()}
+        />
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    list: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -57,5 +61,5 @@ const styles = StyleSheet.create({
         marginTop: "5%",
         padding: "5%",
         backgroundColor: "#228b22",
-    },
+    }
 });
