@@ -1,6 +1,6 @@
 import React, {useState, useContext} from "react";
 import {Text, View, StyleSheet, ActivityIndicator} from "react-native";
-import {signUp} from "../api/todoAPI";
+import {signUp} from "../api/crudUser";
 import Field from "./ui/Field";
 import ButtonComponent from "./ui/ButtonComponent";
 import {UsernameContext, TokenContext} from "../context/Context";

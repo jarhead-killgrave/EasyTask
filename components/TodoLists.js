@@ -1,5 +1,8 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Text, View, StyleSheet, ActivityIndicator} from "react-native";
+import {UsernameContext} from "../context/Context";
+import {getTaskLists} from "../api/crudTaskList";
+import ListItem from "./ui/ListItem";
 
 /**
  * The todoLists component
@@ -7,33 +10,26 @@ import {Text, View, StyleSheet, ActivityIndicator} from "react-native";
 export default function TodoLists() {
     const [todoLists, setTodoLists] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     // Get the todoLists of the connected user
     useEffect(() => {
-        fetch("http://localhost:8080/todoLists", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                setTodoLists(data);
-                setIsLoading(false);
-            }
-            )
-            .catch((error) => {
-                console.error("Error:", error);
-            }
-            );
+        getTaskLists().then((response) => {
+            setTodoLists(response);
+        }).catch((error) => {
+            setError(error);
+        }).finally(() => {
+            setIsLoading(false);
+        }
+        );
     }, []);
 
     return (
         <View style={styles.container}>
             {isLoading ? <ActivityIndicator/> : (
-                todoLists.map((todoList) => (
-                    <Text key={todoList.id}>{todoList.content}</Text>
-                ))
+                error ? <Text>{error.message}</Text> : (
+                    <ListItem data={todoLists}/>
+                )
             )}
         </View>
     );

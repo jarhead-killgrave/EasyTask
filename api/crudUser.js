@@ -1,9 +1,49 @@
-const API_URL = 'http://192.168.56.101:4000'
+//const API_URL = 'http://192.168.56.101:4000'
+const API_URL = 'http://localhost:4000'
 const SIGN_IN =
     'mutation($username:String!, $password:String!){signIn(username:$username, password:$password)}'
 
 const SIGN_UP =
     'mutation($username:String!, $password:String!){signUp(username:$username, password:$password)}'
+
+const UPDATE_USER =
+    `mutation($id:ID!, $username:String!, $password:String!){
+        updateUser(
+            where: { id: $id },
+            input: { username: $username, password: $password }
+        ){
+            users{
+                id
+                username
+                password
+            }
+        }
+    }`
+
+const DELETE_USER =
+    `mutation($id:ID!){
+        deleteUser(
+            where: { id: $id }
+        ){
+            users{
+                id
+                username
+                password
+            }
+        }
+    }`
+
+const USERS =
+    `query($username:String!){
+            users(
+                where: { username: $username }
+                ){
+                    id
+                    username
+                    password
+                }
+        }`
+
 
 
 

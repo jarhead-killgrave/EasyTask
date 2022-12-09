@@ -1,7 +1,5 @@
 import React, {useState} from "react";
-import {Text, View, StyleSheet} from "react-native";
-import Field from "../components/ui/Field";
-import ButtonComponent from "../components/ui/ButtonComponent";
+import {View, StyleSheet} from "react-native";
 import SignIn from "../components/SignIn";
 
 /**

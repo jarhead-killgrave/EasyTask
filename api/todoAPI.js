@@ -27,7 +27,7 @@ export function signUp(username, password) {
     })
     .then((json) => {
       if (json.errors !== null) {
-        throw new json.errors[0]
+        throw json.errors[0]
       }
       console.log(json.data);
         return json.data.signUp

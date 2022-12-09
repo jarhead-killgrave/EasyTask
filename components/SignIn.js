@@ -3,7 +3,8 @@ import {Text, View, StyleSheet, ActivityIndicator} from "react-native";
 import Field from "./ui/Field";
 import ButtonComponent from "./ui/ButtonComponent";
 import {UsernameContext, TokenContext} from "../context/Context";
-import {signIn} from "../api/todoAPI";
+import {signIn} from "../api/crudUser";
+
 
 /**
  * The component that permits to sign in

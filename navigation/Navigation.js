@@ -6,7 +6,6 @@ import HomeScreen from "../Screen/HomeScreen";
 import TodoLists from "../Screen/TodoLists";
 import SignInScreen from "../Screen/SignInScreen";
 import SignUpScreen from "../Screen/signUpScreen";
-import TodoList from "../components/TodoList";
 import SignOutScreen from "../Screen/SignOutScreen";
 
 const Tab = createBottomTabNavigator();

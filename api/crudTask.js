@@ -1,5 +1,5 @@
-const API_URL = "http://192.168.56.101:4000";
-
+//const API_URL = "http://192.168.56.101:4000";
+const API_URL = "http://localhost:4000";
 const TASKS =
     `query($taskListId:ID!){
         tasks(
