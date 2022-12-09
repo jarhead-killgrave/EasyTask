@@ -25,7 +25,7 @@ export default function TodoLists() {
     }, []);
 
     return (
-        <View style={styles.container}>
+        <View>
             {isLoading ? <ActivityIndicator/> : (
                 error ? <Text>{error.message}</Text> : (
                     <ListItem data={todoLists}/>
@@ -33,6 +33,4 @@ export default function TodoLists() {
             )}
         </View>
     );
-
-
 }
