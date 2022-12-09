@@ -28,9 +28,21 @@ export default function TodoLists() {
         <View>
             {isLoading ? <ActivityIndicator/> : (
                 error ? <Text>{error.message}</Text> : (
-                    <ListItem data={todoLists}/>
+                    <ListItem data={todoLists} style={styles.list}/>
                 )
             )}
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    list: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        marginTop: "5%",
+        padding: "5%",
+        backgroundColor: "#f5f5f5"
+    },
+});
