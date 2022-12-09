@@ -58,6 +58,5 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: "5%",
         padding: "5%",
-        backgroundColor: "#228b22",
     }
 });

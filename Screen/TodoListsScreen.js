@@ -24,7 +24,7 @@ export default function TodoListsScreen(props) {
 
     return (
         <View style={styles.container}>
-            <ListItem data={todoLists} style={styles.list}/>
+            <ListItem data={todoLists}/>
             <AddInput text={newTodoList} setText={setNewTodoList} onSubmit={addTodoList} onFocus={() => { }}/>
 
         </View>
@@ -37,14 +37,5 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    list: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-        marginTop: "5%",
-        padding: "5%",
-        backgroundColor: "#ff0000",
     }
 });
