@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {useState, useContext} from "react";
 import {Text, View, StyleSheet, ActivityIndicator} from "react-native";
 import Field from "./ui/Field";
 import ButtonComponent from "./ui/ButtonComponent";
@@ -8,14 +8,19 @@ import {signIn} from "../api/todoAPI";
 /**
  * The component that permits to sign in
  *
- * @param props the properties of the component
  */
 export default function SignIn(){
+    // The username state
     const [username, setUsername] = useState("");
+    // The password state
     const [password, setPassword] = useState("");
+    // The error state
     const [error, setError] = useState("");
+    // The visibility state
     const [visible, setVisible] = useState(true);
+    // The setToken function
     const [, setToken] = useContext(TokenContext);
+    // The setUsernameContext function
     const [, setUsernameContext] = useContext(UsernameContext);
 
     const getSignIn = () =>{

@@ -1,49 +1,41 @@
-directive @default(value: Boolean) on FIELD_DEFINITION
-directive @relation(type: String, direction: String) on FIELD_DEFINITION
-directive @unique on FIELD_DEFINITION
-directive @auth(rules: [AuthRule!]!) on OBJECT | FIELD_DEFINITION
-
-enum AuthRule {
-    allow
-    deny
-    owner
-    public
-    private
+type Task @model {
+    id: ID @id
+    title: String
+    contains: [Task] @relationship(type: "CONTAINS", direction: OUT)
+    owner: User @relationship(type: "OWNED_BY", direction: OUT)
+    done: Boolean @default(value: false)
 }
 
-enum Operation {
-    create
-    update
-    delete
-    read
+type TaskList @model {
+    id: ID @id
+    name: String
+    tasks: [Task] @relationship(type: "CONTAINS", direction: OUT)
+    owner: User @relationship(type: "OWNED_BY", direction: OUT)
 }
 
+extend type Task @auth(rules: [{ operations: [CREATE, READ, UPDATE, DELETE], OR : [{roles: ["admin"]}, {bind: { owner:{id: "$jwt.sub" }}, allow: { owner:{id: "$jwt.sub" }}}]}])
 
-enum Role {
-    admin
-    owner
-    public
+extend type TaskList @auth(rules: [{ operations: [CREATE, READ, UPDATE, DELETE], OR : [{roles: ["admin"]}, {bind: { owner:{id: "$jwt.sub" }}, allow: { owner:{id: "$jwt.sub" }}}]}])
+
+type User @model {
+    id: ID @id
+    username: String!
+    password: String! @private
+    roles: [String!]
 }
 
-type User{
-    id: ID! @unique
-    name: String!
-    email: String!
-    password: String!
+extend type User @auth(rules: [{ operations: [CREATE, READ, UPDATE, DELETE], OR: [{ roles: ["admin"] }, { allow: { id: "$jwt.sub" } }] }])
+
+type Mutation {
+    signUp(username: String!, password: String!): String! @auth
+    signIn(username: String!, password: String!): String! @auth
+    createTask(title: String!, owner: ID = "$jwt.sub", done: Boolean = false): Task
+    updateTask(id: ID!, title: String, done: Boolean): Task
+    deleteTask(id: ID!): Task
 }
 
-
-type Todo{
-    id: ID! @unique
-    content: String!
-    done: Boolean! @default(value: false)
+type Query {
+    me: User @auth(rules: [{ allow: ["$jwt.sub"] }])
+    myTasks: [Task] @auth(rules: [{ allow: ["$jwt.sub"] }])
+    myTaskLists: [TaskList] @auth(rules: [{ allow: ["$jwt.sub"] }])
 }
-
-type TodoList{
-    id: ID! @unique
-    name: String!
-    todos: [Todo!]! @relation(type: "CONTAINS", direction: "OUT")
-    owner: User! @relation(type: "OWNED_BY", direction: "OUT")
-}
-
-

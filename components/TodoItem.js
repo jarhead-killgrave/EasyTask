@@ -47,8 +47,6 @@ export default function TodoItem(props) {
     );
 }
 
-const screenWidth = Dimensions.get("window").width;
-const screenHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
     container: {

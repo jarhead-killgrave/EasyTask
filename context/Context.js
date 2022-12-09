@@ -5,3 +5,6 @@ export const TokenContext = createContext();
 
 // The userName of the connected user
 export const UsernameContext = createContext();
+
+// The todoLists of the connected user
+export const TodoListsContext = createContext();

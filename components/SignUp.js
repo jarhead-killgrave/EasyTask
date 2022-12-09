@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {useState, useContext} from "react";
 import {Text, View, StyleSheet, ActivityIndicator} from "react-native";
 import {signUp} from "../api/todoAPI";
 import Field from "./ui/Field";
@@ -9,12 +9,19 @@ import {UsernameContext, TokenContext} from "../context/Context";
  * The component that permits to sign up
  */
 export default function SignUp(){
+    // The username state
     const [username, setUsername] = useState("");
+    // The password state
     const [password, setPassword] = useState("");
+    // The error state
     const [confirmPassword, setConfirmPassword] = useState("");
+    // The error state
     const [error, setError] = useState("");
+    // The visibility state
     const [visible, setVisible] = useState(true);
+    // The setToken function
     const [, setToken] = useContext(TokenContext);
+    // The setUsernameContext function
     const [, setUsernameContext] = useContext(UsernameContext);
 
     const getSignUp = () =>{
