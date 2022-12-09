@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: "5%",
         padding: "5%",
-        backgroundColor: "#f5f5f5"
+        backgroundColor: "#0000ff",
     },
 });
