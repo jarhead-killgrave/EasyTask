@@ -8,7 +8,7 @@ import {Text, View, StyleSheet, Switch, TouchableOpacity, Image} from "react-nat
  */
 export default function Item(props =
                                  {item: {id: -1, content: ""}, checkable: false, checked: false,
-                                     _onCheck: () => {}, destructible: false, _onDelete: () => {}, clickable: false, _onPress: () => {}}) {
+                                     _onCheck: () => {}, deletable: false, _onDelete: () => {}, pressable: false, _onPress: () => {}}) {
     const [checked, setChecked] = useState(props.checked);
 
     // Update the checked state when the props change
@@ -33,21 +33,21 @@ export default function Item(props =
     }
 
     return (
-        <View style={styles.item}>
+        <View style={styles.container}>
             {props.checkable &&
                 <Switch value={checked} onValueChange={onCheck}/>}
-            {props.clickable &&
+            {props.pressable &&
                 <TouchableOpacity onPress={onPress}>
                     <Text style={styles.text}>
                         {props.item.content}</Text>
                 </TouchableOpacity>
             }
-            {!props.clickable &&
+            {!props.pressable &&
                 <Text style={styles.text}>
                     {props.item.content}
                 </Text>
             }
-            {props.destructible &&
+            {props.deletable &&
                 <TouchableOpacity style={styles.button} onPress={onDelete}>
                     <Image source={require('../../assets/trash.png')} style={styles.image}/>
                 </TouchableOpacity>

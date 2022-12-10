@@ -7,7 +7,7 @@ import Item from "./Item";
  * @param props the properties of the component
  */
 export default function ListItem(props = {
-    data: [], deletableItem: false, checkableItem: false, clickableItem: false,
+    data: [], deletableItem: false, checkableItem: false, pressableItem: false,
     onItemDelete: () => {}, onItemCheck: () => {}, onItemPress: () => {} }) {
 
     // The list of items
@@ -20,20 +20,11 @@ export default function ListItem(props = {
 
     // Delete an item
     const deleteItem = (id) => {
-        const newItems = items.filter(item => item.id !== id);
-        setItems(newItems);
         props.onItemDelete(id);
     }
 
     // Check an item
     const checkItem = (id, done) => {
-        const newItems = items.map(item => {
-            if (item.id === id) {
-                item.done = done;
-            }
-            return item;
-        });
-        setItems(newItems);
         props.onItemCheck(id, done);
     }
 
@@ -47,7 +38,7 @@ export default function ListItem(props = {
             style={styles.list}
             data={items}
             renderItem={({item}) => <Item item={item} deletable={props.deletableItem} checkable={props.checkableItem}
-                                          clickable={props.clickableItem} _onDelete={deleteItem} _onCheck={checkItem} _onPress={pressItem}/>}
+                                          pressable={props.pressableItem} _onDelete={deleteItem} _onCheck={checkItem} _onPress={pressItem}/>}
             keyExtractor={item => item.id.toString()}
         />
     );
@@ -57,7 +48,6 @@ const styles = StyleSheet.create({
     list: {
         flex: 1,
         width: '100%',
-        marginTop: "5%",
-        padding: "5%",
+        backgroundColor: "#f5f5f5"
     }
 });

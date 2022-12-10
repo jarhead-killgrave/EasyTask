@@ -1,5 +1,5 @@
-//const API_URL = 'http://192.168.56.101:4000'
-const API_URL = 'http://localhost:4000'
+import {graphqlRequest} from "./todoAPI";
+
 const TASK_LISTS =
     `query($username:String!){
          taskLists(
@@ -12,7 +12,7 @@ const TASK_LISTS =
 
 const CREATE_TASK_LIST =
     `mutation($title:String!, $username:String!){
-        createTaskList(
+        createTaskLists(
             input: {
                 title: $title,
                 owner: { 
@@ -26,13 +26,13 @@ const CREATE_TASK_LIST =
                 owner{
                     username
                 }
-            }
+           }
         }
     }`
 
 const DELETE_TASK_LIST =
     `mutation($id:ID!){
-        deleteTaskList(
+        deleteTaskLists(
             where: { id: $id }
         ){
             taskLists{
@@ -62,102 +62,64 @@ const UPDATE_TASK_LIST =
     }`
 
 
-export function getTaskLists(username) {
-    return fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            query: TASK_LISTS,
-            variables: {
-                username: username
-            }
-        })
-    })
-        .then(response => {
-            return response.json()
-        })
-        .then(jsonResponse => {
-            if (jsonResponse.errors != null) {
-                throw jsonResponse.errors[0]
-            }
-            return jsonResponse.data.taskLists
-        })
+
+
+/**
+ * getTaskLists is a function that sends a GraphQL query to a server to get a list of task lists.
+ *
+ * @param {string} username - The username of the user whose task lists should be retrieved.
+ * @param {string} token - The authentication token to include in the request headers.
+ * @returns {Promise} A promise that is resolved with the list of task lists.
+ *                    If an error occurs, the promise is rejected with the error.
+ */
+export function getTaskLists(username, token) {
+    return graphqlRequest(TASK_LISTS, { username }, token)
+        .then(data => data.taskLists)
+        .catch(error => {
+            throw error;
+        });
 }
 
-export function createTaskList(title, username) {
-    return fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            query: CREATE_TASK_LIST,
-            variables: {
-                title: title,
-                username: username
-            }
-        })
-    })
-        .then(response => {
-            return response.json()
-        })
-        .then(jsonResponse => {
-            if (jsonResponse.errors != null) {
-                throw jsonResponse.errors[0]
-            }
-            return jsonResponse.data.createTaskList.taskLists
-        })
+/**
+ * createTaskList is a function that sends a GraphQL mutation to a server to create a new task list.
+ *
+ * @param {string} title - The title of the new task list.
+ * @param {string} username - The username of the user who is creating the task list.
+ * @param {string} token - The authentication token to include in the request headers.
+ * @returns {Promise} A promise that is resolved with the new task list.
+ *                    If an error occurs, the promise is rejected with the error.
+ */
+export function createTaskList(title, username, token) {
+    return graphqlRequest(CREATE_TASK_LIST, { title, username }, token)
+        .then(data => data.createTaskLists.taskLists)
+        .catch(error => {
+            throw error;
+        });
 }
 
-export function deleteTaskList(id) {
-    return fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            query: DELETE_TASK_LIST,
-            variables: {
-                id: id
-            }
-        })
-    })
-        .then(response => {
-            return response.json()
-        })
-        .then(jsonResponse => {
-            if (jsonResponse.errors != null) {
-                throw jsonResponse.errors[0]
-            }
-            return jsonResponse.data.deleteTaskList.taskLists
-        })
+/**
+ * Delete a task list
+ * @param {string} id
+ * @param {string} token
+ * @returns {Promise<Response>}
+ * @throws {Error}
+ */
+export function deleteTaskList(id, token) {
+    return graphqlRequest(DELETE_TASK_LIST, { id: id }, token)
+        .then(data => data.deleteTaskLists.taskLists)
 }
 
-export function updateTaskList(id, title) {
-    return fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            query: UPDATE_TASK_LIST,
-            variables: {
-                id: id,
-                title: title
-            }
-        })
-    })
-        .then(response => {
-            return response.json()
-        })
-        .then(jsonResponse => {
-            if (jsonResponse.errors != null) {
-                throw jsonResponse.errors[0]
-            }
-            return jsonResponse.data.updateTaskList.taskLists
-        })
+/**
+ * Update a task list
+ * @param {string} id
+ * @param {string} title
+ * @param {string} token
+ */
+export function updateTaskList(id, title, token) {
+    return graphqlRequest(UPDATE_TASK_LIST, { id: id, title: title }, token)
+        .then(data => data.updateTaskList.taskLists)
 }
+
+
 
 // Path: api/crudTask.js

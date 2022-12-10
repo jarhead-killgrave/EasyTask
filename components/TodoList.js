@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Button, FlatList, StyleSheet, Text, TextInput, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import todoData from "../Helpers/todoData";
-import TodoItem from "./TodoItem";
+import {getTasks, createTask, updateTask} from "../api/crudTask";
 import AddInput from "./ui/AddInput";
+import ListItem from "./ui/ListItem";
 import Header from "./Header";
 import ButtonComponent from "./ui/ButtonComponent";
 /**
@@ -11,17 +12,27 @@ import ButtonComponent from "./ui/ButtonComponent";
  * @param props the properties of the component
  * @constructor the constructor of the component
  */
-export default function TodoList(props) {
+export default function TodoList(props={id: -1, title: ""}) {
     // The list of todoItems
-    const [todos, setTodos] = useState(todoData);
-
+    const [todos, setTodos] = useState([]);
     // The text of the TextInput
     const [newTodo, setNewTodo] = useState("");
-    const [count, setCount] = useState(todoData.filter(todo => todo.done).length);
+    const [count, setCount] = useState(todos.filter(todo => todo.done).length);
     const [filter, setFilter] = useState("all");
     const [filteredTodos, setFilteredTodos] = useState(todos);
     // Liste the options for the filter
     const filterOptions = ["all", "done", "todo"];
+
+    // Update the list of todoItems
+    useEffect(() => {
+        try {
+            getTasks(props.id).then((response) => {
+                setTodos(response);
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }, [props.id]);
 
     // Update the count state when the todos state changes
     useEffect(() => {
@@ -50,9 +61,16 @@ export default function TodoList(props) {
 
     // Add a todoItem to the list
     const addTodo = () => {
-        const newTodos = [...todos, {id: Math.max(...todos.map(todo => todo.id)) + 1, content: newTodo, done: false}];
-        setTodos(newTodos);
-        setNewTodo("");
+        if (newTodo.length > 0) {
+                    try {
+                        createTask(props.id, newTodo).then((response) => {
+                            setTodos([...todos, response]);
+                        });
+                    } catch (e) {
+                        console.log(e);
+                    }
+                    setNewTodo("");
+                }
     };
 
     // Update a todoItem in the list
@@ -64,6 +82,14 @@ export default function TodoList(props) {
             return todo;
         });
         setTodos(newTodos);
+
+        try {
+            updateTask(id, done).then((response) => {
+                console.log(response);
+            });
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     //Check All
@@ -73,6 +99,7 @@ export default function TodoList(props) {
             return todo;
         });
         setTodos(newTodos);
+
     }
 
 
@@ -82,23 +109,8 @@ export default function TodoList(props) {
                 style={styles.header}
                 nbDone={count} nbTotal={todos.length} filter={filter} setFilter={setFilter} filterOptions={filterOptions}/>
 
-            <FlatList
-                style={styles.listItem}
-                ListEmptyComponent={
-                    <Text style={styles.empty}>
-                        No todo
-                    </Text>
+            <ListItem data={filteredTodos} _onDelete={deleteTodo} _onCheck={updateTodo}/>
 
-                }
-                data={filteredTodos}
-                renderItem={({item}) => <TodoItem item={item}
-                                                  deleteItem={(id) => deleteTodo(id)}
-                                                    updateItem={
-                                                        (id, done) => updateTodo(id, done)
-                                                    }/>}
-                keyExtractor={item => item.id.toString()}
-
-            />
             <AddInput
                 style={styles.addInput}
                 text={newTodo} setText={setNewTodo} onSubmit={addTodo} checkAll={checkAll} onFocus={() => setFilter("all")}/>

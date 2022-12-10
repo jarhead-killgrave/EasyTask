@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Image, StyleSheet, Switch, Text, TouchableOpacity, View, Dimensions} from "react-native";
+import {Image, StyleSheet, Switch, Text, TouchableOpacity, View} from "react-native";
 
 /**
  * TodoItem component is a simple component that displays a todoItem object with a Switch, a Text

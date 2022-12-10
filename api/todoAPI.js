@@ -1,64 +1,33 @@
-const API_URL = 'http://192.168.56.101:4000'
-const SIGN_IN =
-  'mutation($username:String!, $password:String!){signIn(username:$username, password:$password)}'
+//const API_URL = 'http://192.168.56.101:4000'
+const API_URL = 'http://localhost:4000'
 
-const SIGN_UP =
-    'mutation($username:String!, $password:String!){signUp(username:$username, password:$password)}'
+/**
+ * graphqlRequest is a function that sends a GraphQL query to a server and returns the data.
+ *
+ * @param {string} query - The GraphQL query to send to the server.
+ * @param {Object} variables - The variables to include in the query.
+ * @param {string} token - The authentication token to include in the request headers.
+ */
+export const graphqlRequest = (query, variables, token = "") => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
 
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
 
-
-export function signUp(username, password) {
   return fetch(API_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query: SIGN_UP,
-      variables: {
-        username: username,
-        password: password,
-      },
-    }),
+    headers: headers,
+    body: JSON.stringify({ query, variables }),
   })
-    .then((response) => {
-      console.log(response)
-        return response.json()
-    })
-    .then((json) => {
-      if (json.errors !== null) {
-        throw json.errors[0]
-      }
-      console.log(json.data);
-        return json.data.signUp
-    })
-}
+      .then(response => response.json())
+      .then(response => {
+        if (response.errors != null) {
+          throw new Error(response.errors[0].message);
+        }
+        return response.data;
+      });
+};
 
-
-export function signIn (username, password) {
-  return fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      query: SIGN_IN,
-      variables: {
-        username: username,
-        password: password
-      }
-    })
-  })
-    .then(response => {
-      return response.json()
-    })
-    .then(jsonResponse => {
-      if (jsonResponse.errors != null) {
-        throw jsonResponse.errors[0]
-      }
-      return jsonResponse.data.signIn
-    })
-    .catch(error => {
-      throw error
-    })
-}

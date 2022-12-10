@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import {StyleSheet, Text, View} from "react-native";
-import {UsernameContext} from "../context/Context";
+import {UsernameContext, TokenContext} from "../context/Context";
 
 
 /**
@@ -12,6 +12,9 @@ import {UsernameContext} from "../context/Context";
  */
 export default function HomeScreen(props) {
     const [currentUsername, setCurrentUsername] = useContext(UsernameContext);
+    const [currentToken, setCurrentToken] = useContext(TokenContext);
+    console.log("currentUsername value ",currentUsername);
+    console.log("currentToken value ",currentToken);
         return (
             <View style={styles.container}>
                 <Text>Welcome {currentUsername}</Text>

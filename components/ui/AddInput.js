@@ -3,39 +3,34 @@ import {StyleSheet, Text, TextInput, View, Button, KeyboardAvoidingView, Platfor
 import ButtonComponent from "./ButtonComponent";
 
 /**
- * Component that displays a TextInput and a Button
- * @param props the properties of the component
- * @constructor the constructor of the component
- * @returns {JSX.Element} the component
+ * AddInput is a functional component that renders a TextInput and a ButtonComponent
+ * and allows the user to enter text and submit it.
+ *
+ * The component also adjusts the component's styles when the TextInput is focused or blurred.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} props.value - The current value of the TextInput.
+ * @param {Function} props.onChange - The function to call when the value of the TextInput changes.
+ * @param {string} props.placeholder - The placeholder text for the TextInput.
+ * @param {string} props.title - The title of the ButtonComponent.
  */
-export default function AddInput(props) {
+export default function AddInput(props = {value: "", onChange: () => {}, placeholder: "", title: "Add"}) {
 
-    const [newText, setNewText] = useState("");
+    // The state variable to store the focus status of the TextInput
     const [focus, setFocus] = useState(false);
 
-    // Update the newText state when the text property of the component changes
-    useEffect(() => {
-        setNewText(props.text);
-    }, [props.text]);
-
-    // Update the text property of the component when the newText state changes
-    useEffect(() => {
-        props.setText(newText);
-    }, [newText]);
-
-    //On submit, call the onSubmit function of the component
-    const onSubmit = () => {
-        // Add carriage return if the text is too long
-        console.log(newText.length);
-        if (newText.length > 30) {
-            const text = newText.replace(/(.{30})/g, "$1" + " ");
-            setNewText(text);
-        }
-        props.onSubmit();
+    /**
+     * A private method that is called when the user submits the text.
+     * It calls the onChange function passed in the component's props with the entered text,
+     * and resets the entered text.
+     */
+    const _onSubmit = () => {
+        props.onChange(props.value);
         setNewText("");
     }
 
     return (
+        // Render the KeyboardAvoidingView component with the TextInput and ButtonComponent
         <KeyboardAvoidingView style={styles.container}
                               behavior={Platform.OS === "ios" ? "padding" : ""}
                               keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 20}
@@ -43,21 +38,20 @@ export default function AddInput(props) {
 
         >
             <TextInput style={styles.input}
-                       value={newText}
-                       onSubmitEditing={() => onSubmit()}
-                       onChangeText={(text) => setNewText(text)}
+                       value={props.value}
+                       defaultValue=""
+                       onSubmitEditing={() => _onSubmit()}
+                       onChangeText={(text) => props.onChange(text)}
                        onFocus={() => {
-                           props.onFocus();
-                           // Update the style of the component
                            setFocus(true);
                        }
                        }
                        multiline={true}
                        onBlur={() => setFocus(false)}
-                       placeholder="Enter a new element"/>
+                       placeholder={props.placeholder} />
             <ButtonComponent
-                title="Add"
-                onPress={() => onSubmit()}
+                title={props.title}
+                onPress={() => _onSubmit()}
             />
         </KeyboardAvoidingView>
     );
