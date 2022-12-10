@@ -7,14 +7,13 @@ import Item from "./Item";
  * @param props the properties of the component
  */
 export default function ListItem(props = {
-    data: [], deletableItem: false,
-    checkableItem: false, onItemDelete: () => {
-    }, onItemCheck: () => {
-    }
-}) {
+    data: [], deletableItem: false, checkableItem: false, clickableItem: false,
+    onItemDelete: () => {}, onItemCheck: () => {}, onItemPress: () => {} }) {
+
+    // The list of items
     const [items, setItems] = useState(props.data);
 
-    // Update the items when the props change
+    // Update the list of items
     useEffect(() => {
         setItems(props.data);
     }, [props.data]);
@@ -27,27 +26,29 @@ export default function ListItem(props = {
     }
 
     // Check an item
-    const checkItem = (id, checked) => {
+    const checkItem = (id, done) => {
         const newItems = items.map(item => {
             if (item.id === id) {
-                item.checked = checked;
+                item.done = done;
             }
             return item;
         });
         setItems(newItems);
-        props.onItemCheck(id, checked);
+        props.onItemCheck(id, done);
+    }
+
+    // Press an item
+    const pressItem = (id) => {
+        props.onItemPress(id);
     }
 
     return (
         <FlatList
             style={styles.list}
             data={items}
-            renderItem={({item}) => <Item
-                item={item} checkable={props.checkableItem} checked={item.checked}
-                _onCheck={checkItem} destructible={props.deletableItem} _onDelete={deleteItem}
-            />
-            }
-            keyExtractor={(item, index) => index.toString()}
+            renderItem={({item}) => <Item item={item} deletable={props.deletableItem} checkable={props.checkableItem}
+                                          clickable={props.clickableItem} _onDelete={deleteItem} _onCheck={checkItem} _onPress={pressItem}/>}
+            keyExtractor={item => item.id.toString()}
         />
     );
 }

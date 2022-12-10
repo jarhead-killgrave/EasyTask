@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Text, View, StyleSheet, Switch, TouchableOpacity} from "react-native";
+import {Text, View, StyleSheet, Switch, TouchableOpacity, Image} from "react-native";
 
 
 /**
@@ -8,7 +8,7 @@ import {Text, View, StyleSheet, Switch, TouchableOpacity} from "react-native";
  */
 export default function Item(props =
                                  {item: {id: -1, content: ""}, checkable: false, checked: false,
-                                     _onCheck: () => {}, destructible: false, _onDelete: () => {}}) {
+                                     _onCheck: () => {}, destructible: false, _onDelete: () => {}, clickable: false, _onPress: () => {}}) {
     const [checked, setChecked] = useState(props.checked);
 
     // Update the checked state when the props change
@@ -27,30 +27,29 @@ export default function Item(props =
         props._onDelete(props.item.id);
     }
 
+    // Press the item
+    const onPress = () => {
+        props._onPress(props.item.id);
+    }
+
     return (
-        <View style={styles.container}>
+        <View style={styles.item}>
             {props.checkable &&
-                <Switch
-                    trackColor={{false: "#767577", true: "#81b0ff"}}
-                    thumbColor={checked ? "#f5dd4b" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={onCheck}
-                    value={checked}
-                    style={styles.switch}
-                />
+                <Switch value={checked} onValueChange={onCheck}/>}
+            {props.clickable &&
+                <TouchableOpacity onPress={onPress}>
+                    <Text style={styles.text}>
+                        {props.item.content}</Text>
+                </TouchableOpacity>
             }
-            <Text
-                style={checked ? styles.done : styles.todo}
-            >{props.item.content}</Text>
+            {!props.clickable &&
+                <Text style={styles.text}>
+                    {props.item.content}
+                </Text>
+            }
             {props.destructible &&
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={onDelete}
-                >
-                    <Image
-                        style={styles.image}
-                        source={require('../../assets/trash.png')}
-                    />
+                <TouchableOpacity style={styles.button} onPress={onDelete}>
+                    <Image source={require('../../assets/trash.png')} style={styles.image}/>
                 </TouchableOpacity>
             }
         </View>
