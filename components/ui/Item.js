@@ -32,27 +32,25 @@ export default function Item(props =
         props._onPress(props.item.id);
     }
 
+    // Render the item
+    const render = () => {
+        return (
+            <View style={styles.container}>
+                {props.checkable && <Switch value={checked} onValueChange={onCheck}/>}
+                {props.pressable && <TouchableOpacity onPress={onPress}>
+                    <Text style={styles.text}>{props.item.content}</Text>
+                </TouchableOpacity>}
+                {!props.pressable && <Text style={styles.text}>{props.item.content}</Text>}
+                {props.deletable && <TouchableOpacity onPress={onDelete}>
+                    <Image source={require("../../assets/trash.png")} style={styles.image}/>
+                </TouchableOpacity>}
+            </View>
+        );
+    }
+
     return (
-        <View style={styles.container}>
-            {props.checkable &&
-                <Switch value={checked} onValueChange={onCheck}/>}
-            {props.pressable &&
-                <TouchableOpacity onPress={onPress}>
-                    <Text style={styles.text}>
-                        {props.item.content}</Text>
-                </TouchableOpacity>
-            }
-            {!props.pressable &&
-                <Text style={styles.text}>
-                    {props.item.content}
-                </Text>
-            }
-            {props.deletable &&
-                <TouchableOpacity style={styles.button} onPress={onDelete}>
-                    <Image source={require('../../assets/trash.png')} style={styles.image}/>
-                </TouchableOpacity>
-            }
-        </View>
+        // Render a pressable item or a non-pressable item
+        props.pressable ? <TouchableOpacity onPress={onPress}>{render()}</TouchableOpacity> : render()
     );
 }
 

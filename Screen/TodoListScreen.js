@@ -1,20 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {StyleSheet, View} from "react-native";
-import todoData from "../Helpers/todoData";
-import {getTasks, createTask, updateTask} from "../api/crudTask";
-import AddInput from "./ui/AddInput";
-import ListItem from "./ui/ListItem";
-import Header from "./Header";
+import {View, StyleSheet} from "react-native";
 import {callApiUpdateState} from "../api/todoAPI";
-import ButtonComponent from "./ui/ButtonComponent";
-/**
- * Component that displays a list of TodoItem
- *
- * @param props the properties of the component
- * @constructor the constructor of the component
- */
-export default function TodoList(props={id: -1, title: ""}) {
-    // The list of todoItems
+import {createTask, getTasks, updateTask} from "../api/crudTask";
+import Header from "../components/Header";
+import ListItem from "../components/ui/ListItem";
+import AddInput from "../components/ui/AddInput";
+import ButtonComponent from "../components/ui/ButtonComponent";
+
+
+export default function TodoListScreen(props= {todoList: {id: -1, title: ""}, navigation: {}}) {
     const [todos, setTodos] = useState([]);
     // The text of the TextInput
     const [newTodo, setNewTodo] = useState("");
@@ -27,8 +21,7 @@ export default function TodoList(props={id: -1, title: ""}) {
 
     // Update the list of todoItems
     useEffect(() => {
-        beforeAll()
-        callApiUpdateState(getTasks, () => {}, () => {}, setTodos, props.id);
+        callApiUpdateState(getTasks, setTodos, props.id);
     }, []);
 
     // Update the count state when the todos state changes
@@ -59,15 +52,10 @@ export default function TodoList(props={id: -1, title: ""}) {
     // Add a todoItem to the list
     const addTodo = () => {
         if (newTodo.length > 0) {
-                    try {
-                        createTask(props.id, newTodo).then((response) => {
-                            setTodos([...todos, response]);
-                        });
-                    } catch (e) {
-                        console.log(e);
-                    }
-                    setNewTodo("");
-                }
+            callApiUpdateState(createTask, setTodos, props.id, newTodo).then(() => {
+                setNewTodo("");
+            } );
+        }
     };
 
     // Update a todoItem in the list
@@ -109,8 +97,7 @@ export default function TodoList(props={id: -1, title: ""}) {
             <ListItem data={filteredTodos} _onDelete={deleteTodo} _onCheck={updateTodo}/>
 
             <AddInput
-                style={styles.addInput}
-                text={newTodo} setText={setNewTodo} onSubmit={addTodo} checkAll={checkAll} onFocus={() => setFilter("all")}/>
+                style={styles.addInput} title={"Add a new todo"} value={newTodo} onChange={setNewTodo} onAdd={addTodo}/>
             <View style={styles.buttons}>
                 <ButtonComponent
                     style={styles.button}
@@ -159,7 +146,7 @@ const styles = StyleSheet.create({
         margin: "auto"
     },
     buttons: {
-            flexDirection: 'row',
+        flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: '#fff',
         alignItems: 'center',
@@ -169,12 +156,3 @@ const styles = StyleSheet.create({
         flex: 1,
     }
 });
-
-
-
-
-
-
-
-
-

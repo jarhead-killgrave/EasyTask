@@ -31,3 +31,13 @@ export const graphqlRequest = (query, variables, token = "") => {
       });
 };
 
+export const callApiUpdateState = async (apiCall, setStateFunction, ...args) => {
+    try {
+        const response = await apiCall(...args);
+        setStateFunction(response);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+

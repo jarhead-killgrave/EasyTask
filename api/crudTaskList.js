@@ -31,17 +31,9 @@ const CREATE_TASK_LIST =
     }`
 
 const DELETE_TASK_LIST =
-    `mutation($id:ID!){
-        deleteTaskLists(
-            where: { id: $id }
-        ){
-            taskLists{
-                id
-                title
-                owner{
-                    username
-                }
-            }
+    `mutation($id: ID!) {
+        deleteTaskLists(where: { id: $id }) {
+            nodesDeleted
         }
     }`
 
@@ -106,7 +98,7 @@ export function createTaskList(title, username, token) {
  */
 export function deleteTaskList(id, token) {
     return graphqlRequest(DELETE_TASK_LIST, { id: id }, token)
-        .then(data => data.deleteTaskLists.taskLists)
+        .then(data => data.deleteTaskLists.nodesDeleted)
 }
 
 /**

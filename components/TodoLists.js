@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Text, View, StyleSheet, ActivityIndicator} from "react-native";
+import {View, Text, StyleSheet, ActivityIndicator} from "react-native";
 import {UsernameContext, TokenContext} from "../context/Context";
 import {getTaskLists, createTaskList, updateTaskList, deleteTaskList} from "../api/crudTaskList";
 import ListItem from "./ui/ListItem";
@@ -16,25 +16,35 @@ export default function TodoLists() {
     const [token,] = useContext(TokenContext);
 
     // Call to api function
-    const callApiUpdateState = (apiFunction, ...args) => {
+    const callApiUpdateState = async (apiCall, ...args) => {
+        // Set loading state to true before calling the API function
         setIsLoading(true);
-        apiFunction(...args)
-            .then((response) => {
-                const list = response.map((item) => { return {id: item.id, content: item.title}});
-                setTodoLists(list);
-            })
-            .catch((error) => {
-                console.log(error);
-                setError(error.message);
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+
+        try {
+            // Call the API function with the provided arguments
+            const response = await apiCall(...args);
+
+            // Check if the response is an array and map the response to a new array of objects with "id" and "content" properties
+            // Otherwise, filter the todoLists array to remove the list with the provided id in the first argument of "args"
+            const newLists = Array.isArray(response) ? response.map(list => ({ id: list.id, content: list.title })) : todoLists.filter(list => list.id !== args[0]);
+
+            // Update the todoLists state with the new list of items
+            setTodoLists(newLists);
+        } catch (error) {
+            // Log the error message to the console and store it in the error state
+            console.log(error);
+            setError(error.message);
+        } finally {
+            // Set the loading state to false when the API call is finished
+            setIsLoading(false);
+        }
     }
+
 
     // Get the todoLists when the component is mounted
     useEffect(() => {
         console.log("useEffect");
+        // Call the getTaskLists function with the token and username
         callApiUpdateState(getTaskLists, username, token);
     }, []);
 
@@ -56,8 +66,9 @@ export default function TodoLists() {
     // Display the todoLists
     return (
         <View style={styles.container}>
-            <ListItem data={todoLists} update={updateTodoList} onItemDelete={deleteTodoList} deletableItem={true} />
+            <ListItem data={todoLists} update={updateTodoList} onItemDelete={deleteTodoList} deletableItem={true} pressableItem={true} onItemPress={(id) => console.log(id)}/>
             <AddInput placeholder="New todoList" onChange={createNewTodoList} title={"Add"}/>
+            {isLoading && <ActivityIndicator size="large" color="#0000ff"/>}
         </View>
     );
 }

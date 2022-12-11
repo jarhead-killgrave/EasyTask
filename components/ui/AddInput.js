@@ -26,7 +26,6 @@ export default function AddInput(props = {value: "", onChange: () => {}, placeho
      */
     const _onSubmit = () => {
         props.onChange(props.value);
-        setNewText("");
     }
 
     return (
@@ -41,7 +40,6 @@ export default function AddInput(props = {value: "", onChange: () => {}, placeho
                        value={props.value}
                        defaultValue=""
                        onSubmitEditing={() => _onSubmit()}
-                       onChangeText={(text) => props.onChange(text)}
                        onFocus={() => {
                            setFocus(true);
                        }

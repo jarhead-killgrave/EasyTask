@@ -1,6 +1,7 @@
 import React from "react";
 import {StyleSheet, Text, View, Button} from "react-native";
 import ButtonComponent from "./ui/ButtonComponent";
+import ProgressBar from "./ui/ProgressBar";
 
 /**
  * Header of the application
@@ -13,7 +14,7 @@ export default function Header(props) {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>To-Do List</Text>
-                <Text style={styles.subtitle}>{props.nbDone} / {props.nbTotal}</Text>
+                <ProgressBar style={styles.progressBar} progress={props.nbDone === 0 ? 0 : props.nbDone / props.nbTotal}/>
             </View>
             <View style={styles.separator}/>
             <View style={styles.filterOptions}>
