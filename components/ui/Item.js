@@ -11,7 +11,7 @@ export default function Item(props =
                                      _onCheck: () => {}, deletable: false, _onDelete: () => {}, pressable: false, _onPress: () => {}}) {
     const [checked, setChecked] = useState(props.checked);
 
-    // Update the checked state when the props change
+
     useEffect(() => {
         setChecked(props.checked);
     }, [props.checked]);
@@ -47,7 +47,6 @@ export default function Item(props =
             </View>
         );
     }
-
     return (
         // Render a pressable item or a non-pressable item
         props.pressable ? <TouchableOpacity onPress={onPress}>{render()}</TouchableOpacity> : render()

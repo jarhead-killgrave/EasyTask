@@ -83,7 +83,7 @@ export function getTaskLists(username, token) {
  */
 export function createTaskList(title, username, token) {
     return graphqlRequest(CREATE_TASK_LIST, { title, username }, token)
-        .then(data => data.createTaskLists.taskLists)
+        .then(data => data.createTaskLists.taskLists[0])
         .catch(error => {
             throw error;
         });
@@ -109,7 +109,7 @@ export function deleteTaskList(id, token) {
  */
 export function updateTaskList(id, title, token) {
     return graphqlRequest(UPDATE_TASK_LIST, { id: id, title: title }, token)
-        .then(data => data.updateTaskList.taskLists)
+        .then(data => data.updateTaskList.taskLists[0])
 }
 
 

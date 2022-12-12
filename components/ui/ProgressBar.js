@@ -19,12 +19,11 @@ export default function ProgressBar(props={progress: 0}) {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
-        marginTop: 50,
+        marginTop: 10,
     },
     text: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
-        marginBottom: 20,
     },
     progressBar: {
         width: 300,
@@ -39,18 +38,37 @@ const styles = StyleSheet.create({
     },
     // Media queries
     '@media (max-width: 600px)': {
+        container: {
+            alignItems: 'center',
+        },
         progressBar: {
             width: screenWidth * 0.6,
         },
+        text: {
+            fontSize: 16,
+        }
     },
     '@media (min-width: 600px) and (max-width: 800px)': {
+        container: {
+            alignItems: 'center',
+        },
         progressBar: {
             width: screenWidth * 0.8,
         },
+        text: {
+            fontSize: 16,
+
+        }
     },
     '@media (min-width: 800px)': {
+        container: {
+            alignItems: 'flex-start',
+        },
         progressBar: {
             width: screenWidth * 0.9,
         },
+        text: {
+            fontSize: 20,
+        }
     },
 });

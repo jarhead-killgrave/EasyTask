@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react";
-import {StyleSheet, Text, TextInput, View, Button, KeyboardAvoidingView, Platform} from "react-native";
+import React, {useState} from "react";
+import {StyleSheet, TextInput, KeyboardAvoidingView, Platform} from "react-native";
 import ButtonComponent from "./ButtonComponent";
 
 /**
@@ -14,19 +14,11 @@ import ButtonComponent from "./ButtonComponent";
  * @param {string} props.placeholder - The placeholder text for the TextInput.
  * @param {string} props.title - The title of the ButtonComponent.
  */
-export default function AddInput(props = {value: "", onChange: () => {}, placeholder: "", title: "Add"}) {
+export default function AddInput(props = {value: "", onChange: (text) => {}, onSubmit: () => {}, placeholder: "", title: ""}) {
 
     // The state variable to store the focus status of the TextInput
     const [focus, setFocus] = useState(false);
 
-    /**
-     * A private method that is called when the user submits the text.
-     * It calls the onChange function passed in the component's props with the entered text,
-     * and resets the entered text.
-     */
-    const _onSubmit = () => {
-        props.onChange(props.value);
-    }
 
     return (
         // Render the KeyboardAvoidingView component with the TextInput and ButtonComponent
@@ -38,18 +30,18 @@ export default function AddInput(props = {value: "", onChange: () => {}, placeho
         >
             <TextInput style={styles.input}
                        value={props.value}
-                       defaultValue=""
-                       onSubmitEditing={() => _onSubmit()}
+                       onSubmitEditing={() => props.onSubmit()}
                        onFocus={() => {
                            setFocus(true);
                        }
                        }
+                       onChangeText={(text) => props.onChange(text)}
                        multiline={true}
                        onBlur={() => setFocus(false)}
                        placeholder={props.placeholder} />
             <ButtonComponent
                 title={props.title}
-                onPress={() => _onSubmit()}
+                onPress={() => props.onSubmit()}
             />
         </KeyboardAvoidingView>
     );
@@ -69,6 +61,34 @@ const styles = StyleSheet.create({
         borderColor: "#000",
         borderRadius: 10,
         padding: 16,
+    },
+    // Media query
+    "@media (max-width: 600px)": {
+        container: {
+            flexDirection: "column",
+        },
+        input: {
+            flex: 1,
+            marginBottom: 16,
+        },
+    },
+    "@media (min-width: 600px) and (max-width: 800px)": {
+        container: {
+            flexDirection: "column",
+        },
+        input: {
+            flex: 1,
+            marginBottom: 16,
+        },
+    },
+    "@media (min-width: 800px)": {
+        container: {
+            flexDirection: "row",
+        },
+        input: {
+            flex: 6,
+            marginBottom: 0,
+        },
     }
 });
 

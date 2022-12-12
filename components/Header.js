@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     separator: {
         height: 1,
         backgroundColor: "#000",
-        marginVertical: "2%",
+        marginVertical: 10,
     },
     filterOptions: {
         flexDirection: "row",

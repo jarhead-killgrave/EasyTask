@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {TokenContext} from "../context/Context";
@@ -13,7 +13,14 @@ import TodoListScreen from "../Screen/TodoListScreen";
 
 
 const TodoListsStack = createStackNavigator();
-const TodoListsStackScreen = () => {
+
+
+const TodoListsStackScreen = (props) => {
+    useEffect(() => {
+        props.navigation.setOptions({
+            headerShown: false
+        })
+    }, [])
     return (
         <TodoListsStack.Navigator>
             <TodoListsStack.Screen name="TodoListsScreen" component={TodoListsScreen}/>

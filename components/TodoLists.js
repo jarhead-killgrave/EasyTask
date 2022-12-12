@@ -14,6 +14,7 @@ export default function TodoLists() {
     const [error, setError] = useState("");
     const [username,] = useContext(UsernameContext);
     const [token,] = useContext(TokenContext);
+    const [newTodoList, setNewTodoList] = useState("");
 
     // Call to api function
     const callApiUpdateState = async (apiCall, ...args) => {
@@ -67,7 +68,7 @@ export default function TodoLists() {
     return (
         <View style={styles.container}>
             <ListItem data={todoLists} update={updateTodoList} onItemDelete={deleteTodoList} deletableItem={true} pressableItem={true} onItemPress={(id) => console.log(id)}/>
-            <AddInput placeholder="New todoList" onChange={createNewTodoList} title={"Add"}/>
+            <AddInput placeholder="New todoList" onChange={setNewTodoList} onSubmit={createNewTodoList} value={newTodoList}/>
             {isLoading && <ActivityIndicator size="large" color="#0000ff"/>}
         </View>
     );

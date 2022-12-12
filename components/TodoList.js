@@ -109,8 +109,8 @@ export default function TodoList(props={id: -1, title: ""}) {
             <ListItem data={filteredTodos} _onDelete={deleteTodo} _onCheck={updateTodo}/>
 
             <AddInput
-                style={styles.addInput}
-                text={newTodo} setText={setNewTodo} onSubmit={addTodo} checkAll={checkAll} onFocus={() => setFilter("all")}/>
+                style={styles.addInput} title={newTodo} onChange={setNewTodo} placeholder={"Add a new todo"} onSubmit={addTodo}/>
+
             <View style={styles.buttons}>
                 <ButtonComponent
                     style={styles.button}

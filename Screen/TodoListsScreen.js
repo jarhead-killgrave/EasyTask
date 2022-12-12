@@ -13,11 +13,13 @@ import AddInput from "../components/ui/AddInput";
  * @constructor the constructor of the component
  */
 export default function TodoListsScreen(props) {
+
     const [todoLists, setTodoLists] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [username,] = useContext(UsernameContext);
     const [token,] = useContext(TokenContext);
+    const [newTodoList, setNewTodoList] = useState("");
 
     // Call to api function
     const callApiUpdateState = async (apiCall, ...args) => {
@@ -44,17 +46,15 @@ export default function TodoListsScreen(props) {
         }
     }
 
-
     // Get the todoLists when the component is mounted
     useEffect(() => {
-        console.log("useEffect");
         // Call the getTaskLists function with the token and username
         callApiUpdateState(getTaskLists, username, token);
     }, []);
 
     // Create a new todoList
-    const createNewTodoList = (title) => {
-        callApiUpdateState(createTaskList, username, token, title);
+    const createNewTodoList = () => {
+        callApiUpdateState(createTaskList, newTodoList, username, token);
     }
 
     // Update a todoList
@@ -77,7 +77,7 @@ export default function TodoListsScreen(props) {
     return (
         <View style={styles.container}>
             <ListItem data={todoLists} update={updateTodoList} onItemDelete={deleteTodoList} deletableItem={true} pressableItem={true} onItemPress={onPress}/>
-            <AddInput placeholder="New todoList" onChange={createNewTodoList} title={"Add"}/>
+            <AddInput placeholder="New todoList" value={newTodoList} onChange={setNewTodoList} onSubmit={createNewTodoList} title={"Add"}/>
             {isLoading && <ActivityIndicator size="large" color="#0000ff"/>}
         </View>
     );

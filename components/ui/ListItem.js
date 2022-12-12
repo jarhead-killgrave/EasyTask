@@ -34,10 +34,11 @@ export default function ListItem(props = {
     }
 
     return (
+
         <FlatList
             style={styles.list}
             data={items}
-            renderItem={({item}) => <Item item={item} deletable={props.deletableItem} checkable={props.checkableItem}
+            renderItem={({item}) => <Item item={item} deletable={props.deletableItem} checkable={props.checkableItem} checked={item.done}
                                           pressable={props.pressableItem} _onDelete={deleteItem} _onCheck={checkItem} _onPress={pressItem}/>}
             keyExtractor={item => item.id.toString()}
         />
