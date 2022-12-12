@@ -4,8 +4,8 @@ import { View, Text, StyleSheet } from 'react-native'
 import { TokenContext } from '../context/Context'
 import ButtonComponent from "../components/ui/ButtonComponent";
 
-export default function SignOutScreen({ navigation }) {
-    const [token, setToken] = useContext(TokenContext);
+export default function SignOutScreen() {
+    const [, setToken] = useContext(TokenContext);
 
     return (
         <View style={styles.container}>
@@ -14,7 +14,6 @@ export default function SignOutScreen({ navigation }) {
             </Text>
             <ButtonComponent title="Sign Out" onPress={() => {
                 setToken(null);
-                navigation.navigate("SignInScreen");
             }
             }/>
         </View>
