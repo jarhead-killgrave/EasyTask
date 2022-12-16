@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Image, StyleSheet, Switch, Text, TouchableOpacity, View, Dimensions} from "react-native";
+import {Image, StyleSheet, Switch, Text, TouchableOpacity, View} from "react-native";
 
 /**
  * TodoItem component is a simple component that displays a todoItem object with a Switch, a Text
@@ -40,15 +40,13 @@ export default function TodoItem(props) {
             >
                 <Image
                     style={styles.image}
-                    source={require('../assets/trash.png')}
+                    source={require('../assets/icons/trash.png')}
                 />
             </TouchableOpacity>
         </View>
     );
 }
 
-const screenWidth = Dimensions.get("window").width;
-const screenHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
     container: {

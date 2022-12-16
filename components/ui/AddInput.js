@@ -1,64 +1,43 @@
-import React, {useState, useEffect} from "react";
-import {StyleSheet, Text, TextInput, View, Button, KeyboardAvoidingView, Platform} from "react-native";
+import React, {useState} from "react";
+import {KeyboardAvoidingView, Platform, StyleSheet, TextInput} from "react-native";
 import ButtonComponent from "./ButtonComponent";
 
 /**
- * Component that displays a TextInput and a Button
- * @param props the properties of the component
- * @constructor the constructor of the component
- * @returns {JSX.Element} the component
+ * AddInput is a functional component that renders a TextInput and a ButtonComponent
+ * and allows the user to enter text and submit it.
+ *
+ * The component also adjusts the component's styles when the TextInput is focused or blurred.
+ *
+ * @param {{onSubmit: props.onSubmit, placeholder: string, title: string}} props - The props for the component.
+ * @param {function} props.onSubmit - The function to call when the user submits the text.
+ * @param {string} props.placeholder - The placeholder text for the TextInput.
+ * @param {string} props.title - The title of the ButtonComponent.
  */
-export default function AddInput(props) {
+export default function AddInput(props = {
+    onSubmit: (texte) => {
+    }, placeholder: "", title: ""
+}) {
 
-    const [newText, setNewText] = useState("");
+    // The state variable to store the focus status of the TextInput
     const [focus, setFocus] = useState(false);
+    const [value, setValue] = useState("");
 
-    // Update the newText state when the text property of the component changes
-    useEffect(() => {
-        setNewText(props.text);
-    }, [props.text]);
-
-    // Update the text property of the component when the newText state changes
-    useEffect(() => {
-        props.setText(newText);
-    }, [newText]);
-
-    //On submit, call the onSubmit function of the component
+    // The function to call when the user submits the TextInput
     const onSubmit = () => {
-        // Add carriage return if the text is too long
-        console.log(newText.length);
-        if (newText.length > 30) {
-            const text = newText.replace(/(.{30})/g, "$1" + " ");
-            setNewText(text);
-        }
-        props.onSubmit();
-        setNewText("");
+        props.onSubmit(value);
+        setValue("");
     }
 
-    return (
-        <KeyboardAvoidingView style={styles.container}
-                              behavior={Platform.OS === "ios" ? "padding" : ""}
-                              keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 20}
-                              enabled={focus}
 
-        >
-            <TextInput style={styles.input}
-                       value={newText}
-                       onSubmitEditing={() => onSubmit()}
-                       onChangeText={(text) => setNewText(text)}
-                       onFocus={() => {
-                           props.onFocus();
-                           // Update the style of the component
-                           setFocus(true);
-                       }
-                       }
-                       multiline={true}
-                       onBlur={() => setFocus(false)}
-                       placeholder="Enter a new element"/>
-            <ButtonComponent
-                title="Add"
-                onPress={() => onSubmit()}
-            />
+    return (
+        // Render the KeyboardAvoidingView component with the TextInput and ButtonComponent
+        <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : ""}
+                              keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 20}
+                              enabled={focus}>
+
+            <TextInput style={styles.input} value={value} onSubmitEditing={onSubmit} onFocus={() => setFocus(true)}
+                       onBlur={() => setFocus(false)} onChangeText={setValue} multiline={true} placeholder={props.placeholder}/>
+            <ButtonComponent style={styles.button} title={props.title} onPress={onSubmit}/>
         </KeyboardAvoidingView>
     );
 }
@@ -77,6 +56,39 @@ const styles = StyleSheet.create({
         borderColor: "#000",
         borderRadius: 10,
         padding: 16,
+    },
+    button: {
+        flex: 1,
+        marginLeft: 10,
+    },
+
+    // Media query
+    "@media (max-width: 600px)": {
+        container: {
+            flexDirection: "column",
+        },
+        input: {
+            flex: 1,
+            marginBottom: 16,
+        },
+    },
+    "@media (min-width: 600px) and (max-width: 800px)": {
+        container: {
+            flexDirection: "column",
+        },
+        input: {
+            flex: 1,
+            marginBottom: 16,
+        },
+    },
+    "@media (min-width: 800px)": {
+        container: {
+            flexDirection: "row",
+        },
+        input: {
+            flex: 6,
+            marginBottom: 0,
+        },
     }
 });
 

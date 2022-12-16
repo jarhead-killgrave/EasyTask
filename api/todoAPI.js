@@ -1,79 +1,58 @@
-const API_URL = 'http://192.168.56.101:4000'
-const SIGN_IN =
-  'mutation($username:String!, $password:String!){signIn(username:$username, password:$password)}'
-
-const SIGN_UP =
-    'mutation($username:String!, $password:String!){signUp(username:$username, password:$password)}'
-
-// Create a task
-const CREATE_TASK =
-    'mutation($id:ID!, $content:String!, $done:Boolean!){createTask(id:$id, content:$content, done:$done)}'
-
-// Create a taskList
-// A task list is a list of tasks that are associated to a user
-const CREATE_TASK_LIST =
-    'mutation($id:ID!, $title:String!, $tasks:[TaskInput]!, $userId:ID!){createTaskList(id:$id, title:$title, tasks:$tasks, userId:$userId)}'
-
-// Get all the task lists of a user
-const GET_TASK_LISTS =
-    'query($userId:ID!){taskLists(userId:$userId){id, title, tasks{id, content, done}}}'
-// Get a task list by its id
-const GET_TASK_LIST =
-    'query($id:ID!){taskList(id:$id){id, title, tasks{id, content, done}}}'
+//const API_URL = 'http://192.168.56.101:4000'
 
 
-export function signUp(username, password) {
+const API_URL = 'http://localhost:4000'
+
+/**
+ * graphqlRequest is a function that sends a GraphQL query to a server and returns the data.
+ *
+ * @param {string} query - The GraphQL query to send to the server.
+ * @param {Object} variables - The variables to include in the query.
+ * @param {string} token - The authentication token to include in the request headers.
+ */
+export const graphqlRequest = (query, variables, token = "") => {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   return fetch(API_URL, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query: SIGN_UP,
-      variables: {
-        username: username,
-        password: password,
-      },
-    }),
+    headers: headers,
+    body: JSON.stringify({ query, variables }),
   })
-    .then((response) => {
-      console.log(response)
-        return response.json()
-    })
-    .then((json) => {
-      if (json.errors !== null) {
-        throw new json.errors[0]
-      }
-      console.log(json.data);
-        return json.data.signUp
-    })
-}
+      .then(response => response.json())
+      .then(response => {
+        if (response.errors != null) {
+          throw new Error(response.errors[0].message);
+        }
+        return response.data;
+      });
+};
+
+/**
+ * callApiUpdateState is a function that calls an API and updates the state of a React component with the response.
+ *
+ * @param {function} apiCall The function to call to retrieve the data from the API.
+ *                             This function should return a promise that resolves with the response data.
+ * @param {function} setStateFunction The function to call to update the state of the React component.
+ *                                      This function should accept the response data as its argument.
+ * @param {...*} args Additional arguments to pass to the apiCall function.
+ *                     These arguments should match the parameters expected by the apiCall function.
+ */
+export const callApiUpdateState = async (apiCall, setStateFunction, ...args) => {
+    try {
+        // Call the provided apiCall function with the provided arguments and wait for the response
+        const response = await apiCall(...args);
+
+        // Call the provided setStateFunction with the response data to update the state of the React component
+        setStateFunction(response);
+    } catch (error) {
 
 
-export function signIn (username, password) {
-  return fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      query: SIGN_IN,
-      variables: {
-        username: username,
-        password: password
-      }
-    })
-  })
-    .then(response => {
-      return response.json()
-    })
-    .then(jsonResponse => {
-      if (jsonResponse.errors != null) {
-        throw jsonResponse.errors[0]
-      }
-      return jsonResponse.data.signIn
-    })
-    .catch(error => {
-      throw error
-    })
-}
+    }
+};
+

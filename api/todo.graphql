@@ -1,49 +1,31 @@
-directive @default(value: Boolean) on FIELD_DEFINITION
-directive @relation(type: String, direction: String) on FIELD_DEFINITION
-directive @unique on FIELD_DEFINITION
-directive @auth(rules: [AuthRule!]!) on OBJECT | FIELD_DEFINITION
-
-enum AuthRule {
-    allow
-    deny
-    owner
-    public
-    private
+type Task{
+    id: ID! @id
+    content: String
+    belongsTo: TaskList @relationship(type: "BELONGS_TO", direction: OUT)
+    done: Boolean @default(value: false)
 }
 
-enum Operation {
-    create
-    update
-    delete
-    read
+extend type Task @auth(rules: [{ operations: [CREATE, READ, UPDATE, DELETE], OR : [{roles: ["admin"]}, {bind: { belongsTo: {owner:{id: "$jwt.sub" }}}, allow: { belongsTo: {owner:{id: "$jwt.sub" }}}}]}])
+
+type TaskList{
+    id: ID @id
+    title: String
+    #  contains: [Task] @relationship(type: "CONTAINS", direction: OUT)
+    owner: User @relationship(type: "OWNED_BY", direction: OUT)
 }
 
-
-enum Role {
-    admin
-    owner
-    public
-}
+extend type TaskList @auth(rules: [{ operations: [CREATE, READ, UPDATE, DELETE], OR : [{roles: ["admin"]}, {bind: { owner:{id: "$jwt.sub" }}, allow: { owner:{id: "$jwt.sub" }}}]}])
 
 type User{
-    id: ID! @unique
-    name: String!
-    email: String!
-    password: String!
+    id: ID @id
+    username: String!
+    password: String! @private
+    roles: [String!]
 }
 
+extend type User @auth(rules: [{ operations: [CREATE, READ, UPDATE, DELETE], OR: [{ roles: ["admin"] }, { allow: { id: "$jwt.sub" } }] }])
 
-type Todo{
-    id: ID! @unique
-    content: String!
-    done: Boolean! @default(value: false)
+type Mutation {
+    signUp(username: String!, password: String!): String! ### JWT
+    signIn(username: String!, password: String!): String! ### JWT
 }
-
-type TodoList{
-    id: ID! @unique
-    name: String!
-    todos: [Todo!]! @relation(type: "CONTAINS", direction: "OUT")
-    owner: User! @relation(type: "OWNED_BY", direction: "OUT")
-}
-
-

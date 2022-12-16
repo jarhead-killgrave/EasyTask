@@ -1,6 +1,7 @@
 import React from "react";
 import {StyleSheet, Text, View, Button} from "react-native";
 import ButtonComponent from "./ui/ButtonComponent";
+import ProgressBar from "./ui/ProgressBar";
 
 /**
  * Header of the application
@@ -12,8 +13,8 @@ export default function Header(props) {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.title}>To-Do List</Text>
-                <Text style={styles.subtitle}>{props.nbDone} / {props.nbTotal}</Text>
+                <Text style={styles.title}>To-Do List : {props.title}</Text>
+                <ProgressBar style={styles.progressBar} progress={props.nbDone === 0 ? 0 : props.nbDone / props.nbTotal}/>
             </View>
             <View style={styles.separator}/>
             <View style={styles.filterOptions}>
@@ -24,7 +25,8 @@ export default function Header(props) {
                                 style={styles.filterOption}
                                 key={index}
                                 title={option}
-                                color={option === props.filter ? "#841584" : "#000"}
+                                color={props.filter === option ? "#008080" : "#fff"}
+                                textColor={props.filter === option ? "#fff" : "#008080"}
                                 onPress={() => props.setFilter(option)}
                             />
                         );
@@ -43,21 +45,19 @@ const styles = StyleSheet.create({
     },
     header: {
         flexDirection: "row",
-        alignItems: "center",
         justifyContent: "space-between",
+        padding: 10,
+        flex: 1,
     },
     title: {
-        fontSize: 30,
+        fontSize: 16,
         fontWeight: "bold",
-    },
-    subtitle: {
-        fontSize: 20,
-        fontWeight: "bold",
+        flex: 1,
     },
     separator: {
         height: 1,
         backgroundColor: "#000",
-        marginVertical: "2%",
+        marginVertical: 10,
     },
     filterOptions: {
         flexDirection: "row",
@@ -66,6 +66,11 @@ const styles = StyleSheet.create({
     filterOption: {
         flex: 1,
         margin: 5,
-    }
+    },
+    progressBar: {
+        flex: 1,
+        width: "50%",
+    },
+
 });
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 import {StyleSheet, Text, View, Button} from "react-native";
 
@@ -9,7 +9,14 @@ import SignUp from "../components/SignUp";
  *
  * @constructor
  */
-export default function SignUpScreen() {
+export default function SignUpScreen(props) {
+    useEffect(() => {
+        props.navigation.setOptions({
+            headerStyle: {
+                backgroundColor: "#008080",
+            }
+        })
+    }, [])
     return (
         <View style={styles.container}>
             <SignUp/>

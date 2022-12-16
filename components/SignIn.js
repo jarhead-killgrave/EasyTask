@@ -1,25 +1,32 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {useState, useContext} from "react";
 import {Text, View, StyleSheet, ActivityIndicator} from "react-native";
 import Field from "./ui/Field";
 import ButtonComponent from "./ui/ButtonComponent";
 import {UsernameContext, TokenContext} from "../context/Context";
-import {signIn} from "../api/todoAPI";
+import {signIn} from "../api/crudUser";
+
 
 /**
  * The component that permits to sign in
  *
- * @param props the properties of the component
  */
 export default function SignIn(){
+    // The username state
     const [username, setUsername] = useState("");
+    // The password state
     const [password, setPassword] = useState("");
+    // The error state
     const [error, setError] = useState("");
+    // The visibility state
     const [visible, setVisible] = useState(true);
+    // The setToken function
     const [, setToken] = useContext(TokenContext);
+    // The setUsernameContext function
     const [, setUsernameContext] = useContext(UsernameContext);
 
     const getSignIn = () =>{
         setError("");
+
         if(username !== "" && password !== ""){
             setVisible(false);
             signIn(username, password).then(
@@ -38,9 +45,7 @@ export default function SignIn(){
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>
-                Sign In
-            </Text>
+
             <Field label="Username" placeholder="Username" onChangeText={(username) => setUsername(username)} value={username}/>
             <Field label="Password" placeholder="Password" onChangeText={(password) => setPassword(password)} value={password} secureTextEntry={true}/>
             <ButtonComponent style = {styles.button} title="Sign In" onPress={() => getSignIn()}/>
@@ -57,6 +62,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#f5f5f5',
         alignItems: 'center',
+        justifyContent: 'center',
     },
     title: {
         fontSize: 30,

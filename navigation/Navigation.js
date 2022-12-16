@@ -3,36 +3,122 @@ import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {TokenContext} from "../context/Context";
 import HomeScreen from "../Screen/HomeScreen";
-import TodoLists from "../Screen/TodoLists";
 import SignInScreen from "../Screen/SignInScreen";
 import SignUpScreen from "../Screen/signUpScreen";
-import TodoList from "../components/TodoList";
-import SignOutScreen from "../Screen/SignOutScreen";
+import TodoListsScreen from "../Screen/TodoListsScreen";
+import {ProfilScreen} from "../Screen/ProfilScreen";
+import Icon from "../components/ui/Icon";
+
+
 
 const Tab = createBottomTabNavigator();
+Tab.Screen.defaultProps = {
+    ...Tab.Screen.defaultProps,
+    options: {
+        headerShown: false,
+        tabStyle: {
+            backgroundColor: '#008080',
+        },
+        headerStyle: {
+            backgroundColor: "#008080",
+        },
+    }
+
+}
 
 export default function Navigation(){
     // The token of the connected user
-    const [token, setToken] = useContext(TokenContext);
-
+    const [token,] = useContext(TokenContext);
     return (
         <NavigationContainer>
             {
                 token === null ? (
-                    <Tab.Navigator>
-                        <Tab.Screen name="SignIn" component={SignInScreen}/>
-                        <Tab.Screen name="SignUp" component={SignUpScreen}/>
+                    <Tab.Navigator
+                        screenOptions={({route}) => ({
+                            tabBarIcon: ({focused, color, size}) => {
+                                let iconName;
+                                if (route.name === 'SignIn') {
+                                    iconName = 'user'
+                                } else if (route.name === 'SignUp') {
+                                    iconName = 'plus'
+                                }
+                                return <Icon name={iconName} size={size} style={{color: color}}/>;
+                            }
+                        })}
+                        tabBarOptions={{
+                            activeTintColor: '#000',
+                            inactiveTintColor: '#fff',
+                            tabStyle: {
+                                backgroundColor: '#008080',
+                            },
+                        }}
+
+                    >
+                        <Tab.Screen
+                            options={
+                                {
+                                    title: "Sign In",
+                                }
+                            }
+                            name="SignIn"
+                            component={SignInScreen}/>
+                        <Tab.Screen
+                            options={
+                                {
+                                    title: "Sign Up",
+                                }
+                            }
+                            name="SignUp" component={SignUpScreen}/>
                     </Tab.Navigator>
                 ) : (
-                    <Tab.Navigator>
-                        <Tab.Screen name="Home" component={HomeScreen}/>
-                        <Tab.Screen name="TodoLists" component={TodoLists}/>
-                        <Tab.Screen name="SignOut" component={SignOutScreen}/>
+                    <Tab.Navigator
+                        screenOptions={({route}) => ({
+                            tabBarIcon: ({focused, color, size}) => {
+                                let iconName;
+                                if (route.name === 'Home') {
+                                    iconName = 'home'
+                                } else if (route.name === 'TodoLists') {
+                                    iconName = 'list'
+                                } else if (route.name === 'Profil') {
+                                    iconName = 'user'
+                                }
+                                return <Icon name={iconName} size={size} style={{color: color}}/>;
+                            }
+                        })}
+                        tabBarOptions={{
+                            tabStyle: {
+                                backgroundColor: '#008080',
+                            },
+                            activeTintColor: '#000',
+                            inactiveTintColor: '#fff',
+                        }}
+                    >
+
+                        <Tab.Screen
+                            options={
+                                {
+                                    title: "Home",
+                                }
+                            }
+                            name="Home" component={HomeScreen}/>
+                        <Tab.Screen
+                            options={
+                                {
+                                    title: "Todo Lists",
+                                }
+                            }
+                            name="TodoLists" component={TodoListsScreen}/>
+                        <Tab.Screen
+                            options={
+                                {
+                                    title: "Profil",
+                                }
+                            }
+                            name="Profil" component={ProfilScreen}/>
                     </Tab.Navigator>
                 )
             }
         </NavigationContainer>
     );
-
-
 }
+
