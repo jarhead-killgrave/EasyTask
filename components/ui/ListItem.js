@@ -29,8 +29,8 @@ export default function ListItem(props = {
     }
 
     // Press an item
-    const pressItem = (id) => {
-        props.onItemPress(id);
+    const pressItem = (id, content) => {
+        props.onItemPress(id, content);
     }
 
     return (

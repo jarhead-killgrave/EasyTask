@@ -29,7 +29,7 @@ export default function Item(props =
 
     // Press the item
     const onPress = () => {
-        props._onPress(props.item.id);
+        props._onPress(props.item.id, props.item.content);
     }
 
     // Render the item
@@ -42,7 +42,7 @@ export default function Item(props =
                 </TouchableOpacity>}
                 {!props.pressable && <Text style={styles.text}>{props.item.content}</Text>}
                 {props.deletable && <TouchableOpacity onPress={onDelete}>
-                    <Image source={require("../../assets/trash.png")} style={styles.image}/>
+                    <Image source={require("../../assets/icons/trash.png")} style={styles.image}/>
                 </TouchableOpacity>}
             </View>
         );

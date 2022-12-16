@@ -26,6 +26,7 @@ export default function SignIn(){
 
     const getSignIn = () =>{
         setError("");
+
         if(username !== "" && password !== ""){
             setVisible(false);
             signIn(username, password).then(
@@ -44,9 +45,7 @@ export default function SignIn(){
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>
-                Sign In
-            </Text>
+
             <Field label="Username" placeholder="Username" onChangeText={(username) => setUsername(username)} value={username}/>
             <Field label="Password" placeholder="Password" onChangeText={(password) => setPassword(password)} value={password} secureTextEntry={true}/>
             <ButtonComponent style = {styles.button} title="Sign In" onPress={() => getSignIn()}/>
@@ -63,6 +62,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#f5f5f5',
         alignItems: 'center',
+        justifyContent: 'center',
     },
     title: {
         fontSize: 30,

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect} from "react";
 import {View, StyleSheet} from "react-native";
 import SignIn from "../components/SignIn";
 
@@ -7,25 +7,14 @@ import SignIn from "../components/SignIn";
  * The component is a form with a username and a password. It has a header with a title and a button to sign in
  * @constructor
  */
-export default function SignInScreen() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-
-    //On change the username
-    const onChangeUsername = (username) => {
-        setUsername(username);
-    }
-    const onChangePassword = (password) => {
-        setPassword(password);
-    }
-
-    //Sign in function
-    const signIn = () => {
-        console.log("Sign in");
-    }
-
-
-
+export default function SignInScreen(props) {
+    useEffect(() => {
+        props.navigation.setOptions({
+            headerStyle: {
+                backgroundColor: "#008080",
+            }
+        })
+    }, [])
     return (
         <View style={styles.container}>
             <SignIn/>

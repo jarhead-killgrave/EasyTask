@@ -12,11 +12,11 @@ export default function ButtonComponent(props) {
     return (
         <TouchableOpacity
             style={[styles.button, {
-                backgroundColor: props.color ? props.color : "#841584",
-                borderColor: props.color ? props.color : "#841584",
+                backgroundColor: props.color ? props.color : "#008080",
+                borderColor: props.color ? props.color : "#008080",
             }, props.style]}
             onPress={props.onPress}>
-            <Text style={styles.text}>{props.title}</Text>
+            <Text style={[styles.text, {color: props.textColor ? props.textColor : "#fff"}]}>{props.title}</Text>
         </TouchableOpacity>
     );
 }
@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     text: {
-        color: "#fff",
         textAlign: "center",
     },
 });

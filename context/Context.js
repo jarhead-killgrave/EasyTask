@@ -1,10 +1,14 @@
 import React, {createContext} from "react";
 
-// The token of the connected user
+// The TokenContext is a React context object that provides
+// access to the token of the connected user.
 export const TokenContext = createContext();
 
-// The userName of the connected user
+// The UsernameContext is a React context object that provides
+// access to the userName of the connected user.
 export const UsernameContext = createContext();
 
-// The todoLists of the connected user
-export const TodoListsContext = createContext();
+// The FeedbackContext is a React context object that provides
+// access to the feedback of the connected user.
+export const FeedbackContext = createContext();
+

@@ -1,57 +1,124 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext} from "react";
 import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {TokenContext} from "../context/Context";
 import HomeScreen from "../Screen/HomeScreen";
 import SignInScreen from "../Screen/SignInScreen";
 import SignUpScreen from "../Screen/signUpScreen";
-import TodoList from "../components/TodoList";
-import SignOutScreen from "../Screen/SignOutScreen";
-import {createStackNavigator} from "@react-navigation/stack";
 import TodoListsScreen from "../Screen/TodoListsScreen";
-import TodoListScreen from "../Screen/TodoListScreen";
+import {ProfilScreen} from "../Screen/ProfilScreen";
+import Icon from "../components/ui/Icon";
 
 
-const TodoListsStack = createStackNavigator();
 
-
-const TodoListsStackScreen = (props) => {
-    useEffect(() => {
-        props.navigation.setOptions({
-            headerShown: false
-        })
-    }, [])
-    return (
-        <TodoListsStack.Navigator>
-            <TodoListsStack.Screen name="TodoListsScreen" component={TodoListsScreen}/>
-            <TodoListsStack.Screen name="TodoListScreen" component={TodoListScreen}/>
-        </TodoListsStack.Navigator>
-    );
-}
 const Tab = createBottomTabNavigator();
+Tab.Screen.defaultProps = {
+    ...Tab.Screen.defaultProps,
+    options: {
+        headerShown: false,
+        tabStyle: {
+            backgroundColor: '#008080',
+        },
+        headerStyle: {
+            backgroundColor: "#008080",
+        },
+    }
+
+}
 
 export default function Navigation(){
     // The token of the connected user
-    const [token, _] = useContext(TokenContext);
+    const [token,] = useContext(TokenContext);
     return (
         <NavigationContainer>
             {
                 token === null ? (
-                    <Tab.Navigator>
-                        <Tab.Screen name="SignIn" component={SignInScreen}/>
-                        <Tab.Screen name="SignUp" component={SignUpScreen}/>
+                    <Tab.Navigator
+                        screenOptions={({route}) => ({
+                            tabBarIcon: ({focused, color, size}) => {
+                                let iconName;
+                                if (route.name === 'SignIn') {
+                                    iconName = 'user'
+                                } else if (route.name === 'SignUp') {
+                                    iconName = 'plus'
+                                }
+                                return <Icon name={iconName} size={size} style={{color: color}}/>;
+                            }
+                        })}
+                        tabBarOptions={{
+                            activeTintColor: '#000',
+                            inactiveTintColor: '#fff',
+                            tabStyle: {
+                                backgroundColor: '#008080',
+                            },
+                        }}
+
+                    >
+                        <Tab.Screen
+                            options={
+                                {
+                                    title: "Sign In",
+                                }
+                            }
+                            name="SignIn"
+                            component={SignInScreen}/>
+                        <Tab.Screen
+                            options={
+                                {
+                                    title: "Sign Up",
+                                }
+                            }
+                            name="SignUp" component={SignUpScreen}/>
                     </Tab.Navigator>
                 ) : (
-                    <Tab.Navigator>
-                        <Tab.Screen name="Home" component={HomeScreen}/>
-                        <Tab.Screen name="TodoLists" component={TodoListsStackScreen}/>
-                        <Tab.Screen name="SignOut" component={SignOutScreen}/>
+                    <Tab.Navigator
+                        screenOptions={({route}) => ({
+                            tabBarIcon: ({focused, color, size}) => {
+                                let iconName;
+                                if (route.name === 'Home') {
+                                    iconName = 'home'
+                                } else if (route.name === 'TodoLists') {
+                                    iconName = 'list'
+                                } else if (route.name === 'Profil') {
+                                    iconName = 'user'
+                                }
+                                return <Icon name={iconName} size={size} style={{color: color}}/>;
+                            }
+                        })}
+                        tabBarOptions={{
+                            tabStyle: {
+                                backgroundColor: '#008080',
+                            },
+                            activeTintColor: '#000',
+                            inactiveTintColor: '#fff',
+                        }}
+                    >
+
+                        <Tab.Screen
+                            options={
+                                {
+                                    title: "Home",
+                                }
+                            }
+                            name="Home" component={HomeScreen}/>
+                        <Tab.Screen
+                            options={
+                                {
+                                    title: "Todo Lists",
+                                }
+                            }
+                            name="TodoLists" component={TodoListsScreen}/>
+                        <Tab.Screen
+                            options={
+                                {
+                                    title: "Profil",
+                                }
+                            }
+                            name="Profil" component={ProfilScreen}/>
                     </Tab.Navigator>
                 )
             }
         </NavigationContainer>
     );
-
-
-
 }
+

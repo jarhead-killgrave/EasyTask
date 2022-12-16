@@ -40,7 +40,7 @@ export default function TodoItem(props) {
             >
                 <Image
                     style={styles.image}
-                    source={require('../assets/trash.png')}
+                    source={require('../assets/icons/trash.png')}
                 />
             </TouchableOpacity>
         </View>

@@ -1,9 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
-import {View, Text, StyleSheet, ActivityIndicator} from "react-native";
+import {View, Text, StyleSheet, ActivityIndicator, Modal} from "react-native";
 import {UsernameContext, TokenContext} from "../context/Context";
 import {getTaskLists, createTaskList, updateTaskList, deleteTaskList} from "../api/crudTaskList";
 import ListItem from "./ui/ListItem";
 import AddInput from "./ui/AddInput";
+import Icon from "./ui/Icon";
+import TodoList from "./TodoList";
 
 /**
  * The todoLists component
@@ -14,62 +16,81 @@ export default function TodoLists() {
     const [error, setError] = useState("");
     const [username,] = useContext(UsernameContext);
     const [token,] = useContext(TokenContext);
-    const [newTodoList, setNewTodoList] = useState("");
+    const [showList, setShowList] = useState(false);
+    const [listId, setListId] = useState(null);
+    const [listName, setListName] = useState(null);
 
-    // Call to api function
-    const callApiUpdateState = async (apiCall, ...args) => {
-        // Set loading state to true before calling the API function
-        setIsLoading(true);
 
-        try {
-            // Call the API function with the provided arguments
-            const response = await apiCall(...args);
-
-            // Check if the response is an array and map the response to a new array of objects with "id" and "content" properties
-            // Otherwise, filter the todoLists array to remove the list with the provided id in the first argument of "args"
-            const newLists = Array.isArray(response) ? response.map(list => ({ id: list.id, content: list.title })) : todoLists.filter(list => list.id !== args[0]);
-
-            // Update the todoLists state with the new list of items
-            setTodoLists(newLists);
-        } catch (error) {
-            // Log the error message to the console and store it in the error state
-            console.log(error);
-            setError(error.message);
-        } finally {
-            // Set the loading state to false when the API call is finished
-            setIsLoading(false);
-        }
-    }
 
 
     // Get the todoLists when the component is mounted
     useEffect(() => {
-        console.log("useEffect");
         // Call the getTaskLists function with the token and username
-        callApiUpdateState(getTaskLists, username, token);
+        setIsLoading(true);
+        getTaskLists(username, token).then(data => {
+            const newTodoLists = data.map(todoList => ({id : todoList.id, content : todoList.title}));
+            setTodoLists(newTodoLists);
+        }).then(() => {
+            setIsLoading(false);
+        })
     }, []);
 
     // Create a new todoList
-    const createNewTodoList = (title) => {
-        callApiUpdateState(createTaskList, username, token, title);
+    const createNewTodoList = (newTodoList) => {
+        // Call the createTaskList function with the token, username and the content of the new todoList
+        createTaskList(newTodoList, username, token).then(data => {
+            // Add the new todoList to the list of todoLists
+            setTodoLists([...todoLists, {id : data.id, content : data.title}]);
+        })
     }
 
     // Update a todoList
     const updateTodoList = (id, name) => {
-        callApiUpdateState(updateTaskList, id, name, token);
+        // Call the updateTaskList function with the token, username, the id of the todoList and the new content
+        updateTaskList(username, token, id, name).then(data => {
+            // Update the todoList in the list of todoLists
+            setTodoLists(todoLists.map(todoList => {
+                if (todoList.id === id) {
+                    return {id : data.id, content : data.title};
+                }
+                return todoList;
+            }));
+        })
     }
 
     // Delete a todoList
     const deleteTodoList = (id) => {
-        callApiUpdateState(deleteTaskList, id, token);
+        // Call the deleteTaskList function with the token, username and the id of the todoList
+        deleteTaskList(id, token).then(data => {
+            // Delete the todoList from the list of todoLists
+            setTodoLists(todoLists.filter(todoList => todoList.id !== id));
+        })
     }
 
-    // Display the todoLists
+    // On press function for the list items
+    const onPress = (id, title) => {
+        // Navigate to the todoList screen with the id and content of the list
+        //props.navigation.navigate("TodoListScreen", {id, title});
+        setShowList(true);
+        setListId(id);
+        setListName(title);
+
+    }
+
+    // If the modal is visible, display the todoList screen in the modal and pass the id and content of the todoList
     return (
         <View style={styles.container}>
-            <ListItem data={todoLists} update={updateTodoList} onItemDelete={deleteTodoList} deletableItem={true} pressableItem={true} onItemPress={(id) => console.log(id)}/>
-            <AddInput placeholder="New todoList" onChange={setNewTodoList} onSubmit={createNewTodoList} value={newTodoList}/>
-            {isLoading && <ActivityIndicator size="large" color="#0000ff"/>}
+            <Modal visible={showList} animationType="slide" onRequestClose={() => setShowList(false)}>
+                <View style={styles.modalHeader}>
+                    <Icon name="arrow-left" size={30} onPress={() => setShowList(false)} pressable={true}/>
+                    <Text style={styles.modalHeaderText}>To-Do List</Text>
+                </View>
+                <TodoList id={listId} title={listName} />
+            </Modal>
+            {isLoading ? <ActivityIndicator style={styles.indicator} size="large" color="#0000ff"/> : (
+                <ListItem data={todoLists} update={updateTodoList} onItemDelete={deleteTodoList} deletableItem={true} pressableItem={true} onItemPress={onPress}/>
+            )}
+            <AddInput placeholder="New todoList" onSubmit={createNewTodoList} title={"Add"}/>
         </View>
     );
 }
@@ -92,5 +113,23 @@ const styles = StyleSheet.create({
     error: {
         color: "#ff0000",
         flex: 1
+    },
+    modalHeader: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        backgroundColor: "#008080",
+        padding: 10,
+        width: "100%"
+    },
+    modalHeaderText: {
+        color: "#fff",
+        fontSize: 20,
+        marginLeft: 10
+    },
+    indicator: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
     }
 });

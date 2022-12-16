@@ -7,20 +7,6 @@ const SIGN_IN =
 const SIGN_UP =
     'mutation($username:String!, $password:String!){signUp(username:$username, password:$password)}'
 
-const UPDATE_USER =
-    `mutation($id:ID!, $username:String!, $password:String!){
-        updateUser(
-            where: { id: $id },
-            input: { username: $username, password: $password }
-        ){
-            users{
-                id
-                username
-                password
-            }
-        }
-    }`
-
 const DELETE_USER =
     `mutation($id:ID!){
         deleteUser(
@@ -45,6 +31,28 @@ const USERS =
                 }
         }`
 
+const CHANGE_USERNAME =
+    `
+    mutation changeUserName($oldUserName: String!, $newUserName: String!){
+      updateUsers(
+        where: {username : $oldUserName}
+        update: {username : $newUserName}
+      ){users
+        {username}
+      }
+    }
+    `
+
+const FIND_USER =
+    `query($username:String!){
+            users(
+                where: { username: $username }
+                ){
+                    id
+                    username
+                }
+        }`
+
 
 
 
@@ -58,3 +66,12 @@ export function signIn(username, password) {
         .then(data => data.signIn)
 }
 
+export function changeUserName(oldUserName, newUserName, token) {
+    return graphqlRequest(CHANGE_USERNAME, {oldUserName, newUserName}, token)
+        .then(data => data.updateUsers.users[0].username).catch(err => {
+            console.log(err);
+            throw err;
+        })
+
+
+}

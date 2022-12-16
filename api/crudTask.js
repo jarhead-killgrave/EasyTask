@@ -1,4 +1,5 @@
 import {graphqlRequest} from "./todoAPI";
+import {Alert} from "react-native";
 
 const TASKS =
     `query($taskListId: ID!) {
@@ -31,11 +32,7 @@ const DELETE_TASK =
         deleteTasks(
             where: { id: $id }
         ){
-            tasks{
-                id
-                content
-                done
-            }
+            nodesDeleted
         }
     }`;
 
@@ -86,7 +83,6 @@ export function getTasks(taskListId, token) {
         .then(data => {
             return data.tasks;
         }).catch(error => {
-            console.log(error);
             throw error;
         })
 }
@@ -100,9 +96,14 @@ export function createTask(taskListId, token, content) {
         .then(data => data.createTasks.tasks[0])
 }
 
-export function deleteTask(id) {
-    return graphqlRequest(DELETE_TASK, {id})
-        .then(data => data.deleteTask.tasks[0])
+export function deleteTask(id, token) {
+    return graphqlRequest(DELETE_TASK, {id}, token)
+        .then(data => data.deleteTasks.nodesDeleted).catch(
+            error => {
+                console.log(error);
+                throw error;
+            }
+        )
 }
 
 export function updateTask(id, content, done) {

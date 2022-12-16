@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {StyleSheet, TextInput, KeyboardAvoidingView, Platform} from "react-native";
+import {KeyboardAvoidingView, Platform, StyleSheet, TextInput} from "react-native";
 import ButtonComponent from "./ButtonComponent";
 
 /**
@@ -8,41 +8,36 @@ import ButtonComponent from "./ButtonComponent";
  *
  * The component also adjusts the component's styles when the TextInput is focused or blurred.
  *
- * @param {Object} props - The props for the component.
- * @param {string} props.value - The current value of the TextInput.
- * @param {Function} props.onChange - The function to call when the value of the TextInput changes.
+ * @param {{onSubmit: props.onSubmit, placeholder: string, title: string}} props - The props for the component.
+ * @param {function} props.onSubmit - The function to call when the user submits the text.
  * @param {string} props.placeholder - The placeholder text for the TextInput.
  * @param {string} props.title - The title of the ButtonComponent.
  */
-export default function AddInput(props = {value: "", onChange: (text) => {}, onSubmit: () => {}, placeholder: "", title: ""}) {
+export default function AddInput(props = {
+    onSubmit: (texte) => {
+    }, placeholder: "", title: ""
+}) {
 
     // The state variable to store the focus status of the TextInput
     const [focus, setFocus] = useState(false);
+    const [value, setValue] = useState("");
+
+    // The function to call when the user submits the TextInput
+    const onSubmit = () => {
+        props.onSubmit(value);
+        setValue("");
+    }
 
 
     return (
         // Render the KeyboardAvoidingView component with the TextInput and ButtonComponent
-        <KeyboardAvoidingView style={styles.container}
-                              behavior={Platform.OS === "ios" ? "padding" : ""}
+        <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : ""}
                               keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 20}
-                              enabled={focus}
+                              enabled={focus}>
 
-        >
-            <TextInput style={styles.input}
-                       value={props.value}
-                       onSubmitEditing={() => props.onSubmit()}
-                       onFocus={() => {
-                           setFocus(true);
-                       }
-                       }
-                       onChangeText={(text) => props.onChange(text)}
-                       multiline={true}
-                       onBlur={() => setFocus(false)}
-                       placeholder={props.placeholder} />
-            <ButtonComponent
-                title={props.title}
-                onPress={() => props.onSubmit()}
-            />
+            <TextInput style={styles.input} value={value} onSubmitEditing={onSubmit} onFocus={() => setFocus(true)}
+                       onBlur={() => setFocus(false)} onChangeText={setValue} multiline={true} placeholder={props.placeholder}/>
+            <ButtonComponent style={styles.button} title={props.title} onPress={onSubmit}/>
         </KeyboardAvoidingView>
     );
 }
@@ -62,6 +57,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 16,
     },
+    button: {
+        flex: 1,
+        marginLeft: 10,
+    },
+
     // Media query
     "@media (max-width: 600px)": {
         container: {
