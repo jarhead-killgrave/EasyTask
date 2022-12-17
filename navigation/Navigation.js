@@ -49,8 +49,11 @@ export default function Navigation(){
                             activeTintColor: '#000',
                             inactiveTintColor: '#fff',
                             tabStyle: {
-                                backgroundColor: '#008080',
+                                backgroundColor: "#B02F13",
                             },
+                            headerStyle: {
+                                backgroundColor: "#B02F13",
+                            }
                         }}
 
                     >
@@ -87,10 +90,13 @@ export default function Navigation(){
                         })}
                         tabBarOptions={{
                             tabStyle: {
-                                backgroundColor: '#008080',
+                                backgroundColor: '#B02F13',
                             },
                             activeTintColor: '#000',
                             inactiveTintColor: '#fff',
+                            headerStyle: {
+                                backgroundColor: "#B02F13",
+                            }
                         }}
                     >
 

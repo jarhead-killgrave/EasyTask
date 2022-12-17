@@ -13,7 +13,7 @@ export default function SignUpScreen(props) {
     useEffect(() => {
         props.navigation.setOptions({
             headerStyle: {
-                backgroundColor: "#008080",
+                backgroundColor: "#B02F13",
             }
         })
     }, [])

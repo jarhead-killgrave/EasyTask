@@ -2,6 +2,7 @@
 \documentclass[12pt]{article}
 
 \usepackage[T1]{fontenc}
+\usepackage{float}
 \usepackage[utf8]{inputenc}
 \usepackage[french]{babel}
 \usepackage{amsmath}
@@ -131,8 +132,96 @@
         l'intérêt de React native est de pouvoir réutiliser des composants. Cela permet de rendre le code plus lisible
         et plus maintenable.\\
 
+    \subsection{Composants réutilisables}{\label{subsec:comp}}
 
+    \subsubsection{Field}{\label{subsubsec:field}}
+    Ce composant permet de créer un champ de formulaire. Il prend en paramètre le type du champ, le nom du champ,
+    la valeur du champ, la fonction de mise à jour de la valeur du champ et un booléen qui indique si le champ est
+    obligatoire ou non.\\
+    Il a été implémenté, car nous avons eu besoin de créer plusieurs champs de formulaire. Ainsi pour éviter de
+    répéter le code et/ou du style, nous avons créé un composant réutilisable. Cela a permit d'avoir une uniformité
+    dans l'application à tout endroit où nous avons utilisé ce composant.\\
 
+    \subsubsection{ButtonComponent}{\label{subsubsec:button}}
+    Les buttons sont l'un des composants les plus utilisés dans une application. Il peut sembler etrange et inutile
+    de créer un composant réutilisable pour un bouton étant donné que React native propose déjà un composant. Cependant,
+    nous avons eu besoin de créer un bouton avec un style particulier. En effet, le composant natif de React native
+    ne laisse pas une grande liberté sur le style du bouton.\\
+    Ce composant réutilisable a permis de créer des boutons à une allure unique et uniforme dans l'application. Il est
+    assez distinct des boutons natifs de React native et apporte une touche d'originalité à l'application.\\
+
+    \subsubsection{IconComponent}{\label{subsubsec:icon}}
+    Nativement, React native ne propose pas de composant pour afficher des icones. Cependant, il existe des librairies
+    qui permettent d'afficher des icones. Cependant, l'utilisation de ces librairies n'est pas très pratique et
+    implique non seulement l'installation de libraries supplémentaires mais aussi une dépendance à ces libraries.\\
+    Nous avons donc créé un composant réutilisable qui permet d'afficher des icones. Son utilisations est très simple
+    et assez similaire à ceux proposés par les librairies.\\
+
+    \subsubsection{Item}{\label{subsubsec:item}}
+    Il a été remarqué durant le developpement que nous avions besoin de créer des items pour afficher des informations
+    dans différentes listes. Par exemple, nous avons besoin d'afficher des listes de tâches dans une liste. Nous avons
+    ainsi créé un composant réutilisable qui permet de créer des items.\\
+    Le composant créé peut être cliquable, switchable, et/ou supprimable. Ces divers propriétés n'influencent pas
+    (ou grandement pas) le style/la manière d'affichage de l'item.\\
+
+    \subsubsection{ListItems}{\label{subsec:list}}
+    Une liste d'item peut être nativement représentée par un composant \textbf{FlatList} de React native. Cependant,
+    pour avoir une meilleure expérience utilisateur, nous avons décidé d'utiliser un composant personnalisé qui nous a
+    permis de décorer la liste d'item à partir d'une \textbf{FlatList}.\\
+    Toutefois sa création n'est qu'une simple surcouche de la \textbf{FlatList} de React native. Et donc, nous pouvons
+    facilement basculer vers l'utilisation de la \textbf{FlatList} si nous le souhaitons.\\
+
+    \subsection{Architecture}{\label{subsec:arch}}
+    L'architecture d'un projet en \textbf{React native} n'est pas si différente de celle d'un projet web. Toutefois
+    il existe quelques différences essentielles.
+    \subsubsection{Structure des fichiers}{\label{subsubsec:structure}}
+    La structure des fichiers d'un projet en \textbf{React native} est la suivante :
+    \begin{itemize}
+        \item \textbf{android} : contient les fichiers spécifiques à l'application pour la plateforme Android.
+        \item \textbf{ios} : contient les fichiers spécifiques à l'application pour la plateforme IOS.
+        \item \textbf{node_modules} : contient les modules nodejs utilisés par l'application.
+        \item \textbf{src} : contient les sources de l'application.
+        \item \textbf{assets} : contient les ressources statiques de l'application.
+        \item \textbf{components} : contient les composants réutilisables de l'application.
+        \item \textbf{screens} : contient les écrans de l'application.
+        \item \textbf{services} : contient les services de l'application.
+        \item \textbf{App.js} : fichier principal de l'application.
+        \item \textbf{app.json} : fichier de configuration de l'application.
+        \item \textbf{package.json} : fichier de configuration du projet.
+    \end{itemize}
+
+    \subsection{Navigation}{\label{subsec:navigation}}
+    La navigation dans une application \textbf{React native} est gérée par un composant natif appelé \textbf{NavigationContainer}.
+    Ce composant permet de gérer la navigation dans l'application.\\
+    Il existe plusieurs types de navigation dans une application \textbf{React native}. Nous avons choisi d'utiliser
+    la navigation par \textbf{BottomTabNavigator} qui permet de naviguer entre plusieurs écrans en utilisant des
+    onglets en bas de l'écran.\\
+    La navigation par \textbf{BottomTabNavigator} est gérée par un composant natif appelé \textbf{createBottomTabNavigator}.
+    Ce composant permet de créer un \textbf{BottomTabNavigator} à partir d'une liste d'écrans.\\
+
+    \subsection{Services}\label{subsec:services}
+    Les services sont des classes qui permettent de diriger les communications avec les serveurs.\\
+    Nous avons utilisé la librairie \textbf{axios} pour gérer les communications avec les serveurs.\\
+    Nous avons créé un service par type de communication avec le serveur.\\
+    La liste des services est la suivante :
+    \begin{itemize}
+        \item \textbf{Auth} : gère les communications avec le serveur pour l'authentification.
+        \item \textbf{Task} : gère les communications avec le serveur pour les tâches.
+        \item \textbf{User} : gère les communications avec le serveur pour les utilisateurs.
+        \item \textbf{TaskList} : gère les communications avec le serveur pour les listes de tâches.
+    \end{itemize}
+
+    \subsection{Context}\label{subsec:context}
+    Les contextes sont des objets qui permettent de partager des informations entre les composants de l'application.
+    Nous avons utilisé la librairie \textbf{react-native-context-api} pour gérer les contextes.\\
+    Nous avons créé un contexte par type d'information à partager.\\
+    La liste des contextes est la suivante :
+    \begin{itemize}
+        \item \textbf{Auth} : gère les informations de l'utilisateur connecté.
+        \item \textbf{Task} : gère les informations des tâches.
+        \item \textbf{TaskList} : gère les informations des listes de tâches.
+        \item \textbf{User} : gère les informations des utilisateurs.
+    \end{itemize}
 
 
 \end{document}

@@ -26,10 +26,10 @@ export function ProfilScreen(props) {
             props.navigation.setOptions({
                 headerShown: true,
                 headerTitle: "Profil",
-                headerStyle: {
-                    backgroundColor: "#008080",
-                },
                 headerTintColor: "#fff",
+                headerStyle: {
+                    backgroundColor: "#B02F13",
+                }
             });
         }, []);
 

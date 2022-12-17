@@ -12,8 +12,8 @@ export default function ButtonComponent(props) {
     return (
         <TouchableOpacity
             style={[styles.button, {
-                backgroundColor: props.color ? props.color : "#008080",
-                borderColor: props.color ? props.color : "#008080",
+                backgroundColor: props.color ? props.color : "#B02F13",
+                borderColor: props.color ? props.color : "#B02F13",
             }, props.style]}
             onPress={props.onPress}>
             <Text style={[styles.text, {color: props.textColor ? props.textColor : "#fff"}]}>{props.title}</Text>

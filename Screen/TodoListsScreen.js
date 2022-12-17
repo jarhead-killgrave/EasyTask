@@ -17,7 +17,7 @@ export default function TodoListsScreen(props) {
             headerShown: true,
             headerTitle: "To-Do Lists",
             headerStyle: {
-                backgroundColor: "#008080",
+                backgroundColor: "#B02F13",
             },
             headerTintColor: "#fff",
             headerRight: () => (
