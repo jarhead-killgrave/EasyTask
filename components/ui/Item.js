@@ -36,7 +36,7 @@ export default function Item(props =
     const render = () => {
         return (
             <View style={styles.container}>
-                {props.checkable && <Switch value={checked} onValueChange={onCheck}/>}
+                {props.checkable && <Switch value={checked} onValueChange={onCheck} style={styles.switch}/>}
                 {props.pressable && <TouchableOpacity onPress={onPress}>
                     <Text style={styles.text}>{props.item.content}</Text>
                 </TouchableOpacity>}
@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
 
     },
     switch: {
-        transform: [{scaleX: 0.8}, {scaleY: 0.8}]
+        transform: [{scaleX: 0.8}, {scaleY: 0.8}],
+        color: "#B02F13",
     },
     done: {
         textDecorationLine: "line-through",
@@ -92,5 +93,6 @@ const styles = StyleSheet.create({
     image: {
         width: 20,
         height: 20
-    }
+    },
+
 });

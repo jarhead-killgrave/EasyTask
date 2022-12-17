@@ -20,11 +20,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#e0e0de",
         borderRadius: 50,
         overflow: "hidden",
-        margin: 10,
     },
     progress: {
         height: "100%",
-        backgroundColor: "#008080",
+        backgroundColor: "#B02F13",
         alignItems: "center",
         justifyContent: "center",
         transition: "width 0.5s ease",

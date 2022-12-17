@@ -17,9 +17,8 @@ export default function HomeScreen(props) {
         props.navigation.setOptions({
             title: "Welcome " + currentUsername,
             headerStyle: {
-                backgroundColor: '#008080',
+                backgroundColor: '#B02F13',
             },
-            headerTintColor: '#fff',
         });
     }, [currentUsername]);
 

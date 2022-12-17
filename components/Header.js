@@ -25,8 +25,8 @@ export default function Header(props) {
                                 style={styles.filterOption}
                                 key={index}
                                 title={option}
-                                color={props.filter === option ? "#008080" : "#fff"}
-                                textColor={props.filter === option ? "#fff" : "#008080"}
+                                color={props.filter === option ? "#B02F13" : "#fff"}
+                                textColor={props.filter === option ? "#fff" : "#B02F13"}
                                 onPress={() => props.setFilter(option)}
                             />
                         );
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     progressBar: {
         flex: 1,
         width: "50%",
+
     },
 
 });
