@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {View, Text, StyleSheet, ActivityIndicator, Modal, FlatList} from "react-native";
 import {UsernameContext, TokenContext} from "../context/Context";
-import {getTaskLists, createTaskList, updateTaskList, deleteTaskList} from "../api/crudTaskList";
+import {getTaskLists, createTaskList, deleteTaskList} from "../api/crudTaskList";
 import AddInput from "./ui/AddInput";
 import Icon from "./ui/Icon";
 import TodoList from "./TodoList";
@@ -44,20 +44,6 @@ export default function TodoLists() {
             setTodoLists([...todoLists, {id : data.id, content : data.title}]);
         }).then(() => {
             setIsLoading(false);
-        })
-    }
-
-    // Update a todoList
-    const updateTodoList = (id, name) => {
-        // Call the updateTaskList function with the token, username, the id of the todoList and the new content
-        updateTaskList(username, token, id, name).then(data => {
-            // Update the todoList in the list of todoLists
-            setTodoLists(todoLists.map(todoList => {
-                if (todoList.id === id) {
-                    return {id : data.id, content : data.title};
-                }
-                return todoList;
-            }));
         })
     }
 
