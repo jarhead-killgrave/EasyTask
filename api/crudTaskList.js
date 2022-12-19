@@ -58,7 +58,7 @@ const DELETE_TASK_LIST =
  * @throws {Error} - If an error occurs while making the request or parsing the response
  */
 export function getTaskLists(username, token) {
-    return graphqlRequest(TASK_LISTS, { username }, token)
+    return graphqlRequest(TASK_LISTS, {username}, token)
         .then(data => data.taskLists)
         .catch(error => {
             throw error;
@@ -74,7 +74,7 @@ export function getTaskLists(username, token) {
  * @throws {Error} - If an error occurs while making the request or parsing the response.
  */
 export function createTaskList(title, username, token) {
-    return graphqlRequest(CREATE_TASK_LIST, { title, username }, token)
+    return graphqlRequest(CREATE_TASK_LIST, {title, username}, token)
         .then(data => data.createTaskLists.taskLists[0])
         .catch(error => {
             throw error;
@@ -89,7 +89,7 @@ export function createTaskList(title, username, token) {
  * @throws {Error} - If an error occurs while making the request or parsing the response.
  */
 export function deleteTaskList(id, token) {
-    return graphqlRequest(DELETE_TASK_LIST, { id: id }, token)
+    return graphqlRequest(DELETE_TASK_LIST, {id: id}, token)
         .then(data => data.deleteTaskLists.nodesDeleted)
         .catch(error => {
             throw error;

@@ -1,21 +1,27 @@
 import React from "react";
-import {StyleSheet, Text, View, TouchableOpacity} from "react-native";
+import {StyleSheet, Text, TouchableOpacity} from "react-native";
+
 
 /**
- * Button component
- * @param props the properties of the component
- * @constructor the constructor of the component
- * @returns {JSX.Element} the component
+ * ButtonComponent is a React native component that represents a button.
+ *
+ * @param {Object} props - The properties for the component.
+ * @param {string} props.title - The label for the button.
+ * @param {function} props.onPress - The function to call when the button is pressed.
+ * @param {string} [props.color] - The background color of the button.
+ * @param {Object} [props.style] - The style object for the button.
+ * @param {string} [props.textColor] - The color of the button label.
+ * @return {ReactElement} - The rendered button element.
  */
 export default function ButtonComponent(props) {
-
     return (
         <TouchableOpacity
             style={[styles.button, {
                 backgroundColor: props.color ? props.color : "#B02F13",
                 borderColor: props.color ? props.color : "#B02F13",
             }, props.style]}
-            onPress={props.onPress}>
+            onPress={props.onPress}
+        >
             <Text style={[styles.text, {color: props.textColor ? props.textColor : "#fff"}]}>{props.title}</Text>
         </TouchableOpacity>
     );
@@ -42,7 +48,8 @@ const styles = StyleSheet.create({
 
 ButtonComponent.defaultProps = {
     text: "Button",
-    onPress: () => {},
+    onPress: () => {
+    },
     styleButton: styles.button,
     styleText: styles.text,
 };

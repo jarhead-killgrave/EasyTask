@@ -1,26 +1,26 @@
 import React from "react";
-import {Text, TextInput, View, StyleSheet} from "react-native";
+import {StyleSheet, Text, TextInput, View} from "react-native";
 
 
 /**
- * The component that represents the field of a form
+ * Field is a React native component that represents an input field.
  *
- * @param props the properties of the component
- * @constructor
+ * @param {Object} props - The properties for the component.
+ * @param {string} props.label - The label for the field.
+ * @param {string} props.placeholder - The placeholder text for the field.
+ * @param {function} props.onChangeText - The function to call when the text in the field changes.
+ * @param {string} props.value - The current value of the field.
+ * @param {boolean} props.secureTextEntry - Whether the field should obscure the entered text.
+ * @return {ReactElement} - The rendered field element.
  */
 export default function Field(props) {
     return (
         <View>
-            <Text
-                style={styles.label}
-            >{props.label}</Text>
-            <TextInput
-                style={styles.input}
-                placeholder={props.placeholder}
-                onChangeText={props.onChangeText}
-                value={props.value}
-                secureTextEntry={props.secureTextEntry}
-            />
+            <Text style={styles.label}>
+                {props.label}
+            </Text>
+            <TextInput style={styles.input} placeholder={props.placeholder} onChangeText={props.onChangeText}
+                       value={props.value} secureTextEntry={props.secureTextEntry}/>
         </View>
     );
 }

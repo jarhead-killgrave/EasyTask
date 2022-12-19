@@ -1,57 +1,63 @@
-import React, {useEffect, useMemo, useState} from "react";
-import {Text, View, StyleSheet, Switch, TouchableOpacity, Dimensions, PixelRatio} from "react-native";
+import React, {useEffect, useState} from "react";
+import {Dimensions, PixelRatio, StyleSheet, Switch, Text, TouchableOpacity, View} from "react-native";
 import Icon from "./Icon";
 
 
 /**
- * A functional component that renders an item in a list.
- *
- * @param {Object} props - The properties of the item
- * @param {Object} props.item - The item to be rendered
- * @param {number|string} props.item.id - The id of the item
- * @param {string} props.item.content - The content of the item
- * @param {boolean} props.checkableItem - Whether the item should be checkable
- * @param {boolean} props.checked - The initial checked state of the item
- * @param {Function} props.onItemCheck - A callback function that is called when the item is checked/unchecked
- * @param {boolean} props.deletableItem - Whether the item should be deletable
- * @param {Function} props.onItemDelete - A callback function that is called when the item is deleted
- * @param {boolean} props.pressableItem - Whether the item should be pressable
- * @param {Function} props.onItemPress - A callback function that is called when the item is pressed
- * @param {StyleSheet.NamedStyles} props.style - The style of the item
- * @returns {React.ReactElement} - The rendered item
+ * Item is a React native component that represents a list item.
+ * @param {Object} props - The properties for the component.
+ * @param {Object} props.item - The item object.
+ * @param {string} props.item.content - The content of the item.
+ * @param {string} props.item.id - The ID of the item.
+ * @param {boolean} [props.checkableItem] - Whether the item should be checkable.
+ * @param {boolean} [props.checked] - Whether the item is checked.
+ * @param {function} props.onItemCheck - The function to call when the item is checked.
+ * @param {boolean} [props.deletableItem] - Whether the item should be deletable.
+ * @param {function} props.onItemDelete - The function to call when the item is deleted.
+ * @param {boolean} [props.pressableItem] - Whether the item should be pressable.
+ * @param {function} props.onItemPress - The function to call when the item is pressed.
+ * @param {Object} [props.style] - The style object for the item.
  */
 export default function Item(props) {
 
-    // Store the checked state of the item
+    // Store the checked state
     const [checked, setChecked] = useState(props.checked);
 
-    // Update the checked state of the item when the props.checked value changes
+    // Update the checked state when the props change
     useEffect(() => {
         setChecked(props.checked);
     }, [props.checked]);
 
-
-    // Helper function to render the item
+    /**
+     * Render a non-pressable item.
+     * @return {ReactElement} - The rendered item.
+     */
     const render = () => {
         return (
             <View style={[styles.item, {backgroundColor: checked ? "#e6e6e6" : "#ffffff"}, props.style]}>
                 {
-                    props.checkableItem && <Switch value={checked} onValueChange={(value) => props.onItemCheck(props.item.id, value)}
-                        thumbColor={checked ? "#00b894" : "#d63031"}
-                                                trackColor={{false: "#d63031", true: "#00b894"}} ios_backgroundColor="#3e3e3e"/>
+                    props.checkableItem &&
+                    <Switch value={checked} onValueChange={(value) => props.onItemCheck(props.item.id, value)}
+                            thumbColor={checked ? "#00b894" : "#d63031"}
+                            trackColor={{false: "#d63031", true: "#00b894"}} ios_backgroundColor="#3e3e3e"/>
                 }
 
                 <Text style={[styles.text, checked && styles.checkedText]}>{props.item.content}</Text>
 
                 {
-                    props.deletableItem && <Icon name="trash" style={styles.icon} onPress={() => props.onItemDelete(props.item.id)} pressable={true}/>
+                    props.deletableItem &&
+                    <Icon name="trash" style={styles.icon} onPress={() => props.onItemDelete(props.item.id)}
+                          pressable={true}/>
                 }
             </View>
         );
     }
-    // return either a pressable or non-pressable item
+
+    // Return the item
     return (
-        props.pressableItem ? <TouchableOpacity onPress={() => props.onItemPress(props.item.id, props.item.content)}>{render()}</TouchableOpacity> : render()
+        // Render a pressable item or a non-pressable item
+        props.pressableItem ? <TouchableOpacity
+            onPress={() => props.onItemPress(props.item.id, props.item.content)}>{render()}</TouchableOpacity> : render()
     );
 }
 
@@ -62,7 +68,7 @@ Item.defaultProps = {
     pressableItem: false,
 }
 
-const { width,} = Dimensions.get('window');
+const {width,} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     item: {
@@ -75,7 +81,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderColor: "#ccc",
         marginBottom: 10,
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: {width: 0, height: 2},
         shadowColor: "black",
         shadowOpacity: 0.26,
         elevation: 5,

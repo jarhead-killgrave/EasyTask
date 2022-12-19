@@ -91,7 +91,7 @@ const MARK_ALL_TASKS =
  * @throws {Error} - If an error occurs while making the request or parsing the response.
  */
 export function getTasks(taskListId, token) {
-    return graphqlRequest(TASKS, {taskListId : taskListId}, token)
+    return graphqlRequest(TASKS, {taskListId: taskListId}, token)
         .then(data => {
             return data.tasks;
         }).catch(error => {
@@ -108,13 +108,20 @@ export function getTasks(taskListId, token) {
  * @throws {Error} - If an error occurs while making the request or parsing the response.
  */
 export function createTask(taskListId, token, content) {
-    return graphqlRequest(CREATE_TASK, {taskListId : taskListId, content : content}, token)
+    return graphqlRequest(CREATE_TASK, {taskListId: taskListId, content: content}, token)
         .then(data => data.createTasks.tasks[0])
         .catch(error => {
             throw error;
         })
 }
 
+/**
+ * deleteTask is a function that deletes a task from a server using a GraphQL mutation.
+ * @param {string} id - The ID of the task to delete.
+ * @param {string} token - The authentication token to include in the request headers.
+ * @return {Promise<Object>} - A promise that resolves to the deleted task object.
+ * @throws {Error} - If an error occurs while making the request or parsing the response.
+ */
 export function deleteTask(id, token) {
     return graphqlRequest(DELETE_TASK, {id}, token)
         .then(data => data.deleteTasks.nodesDeleted).catch(
