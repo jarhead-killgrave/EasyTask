@@ -9,27 +9,33 @@ const SIGN_UP =
 
 const DELETE_USER =
     `mutation($id:ID!){
-        deleteUser(
+        deleteUsers(
             where: { id: $id }
         ){
-            users{
-                id
-                username
-                password
-            }
+            nodesDeleted
         }
     }`
 
-const USERS =
+const USER =
     `query($username:String!){
             users(
                 where: { username: $username }
                 ){
                     id
                     username
-                    password
+                    roles
                 }
         }`
+
+const USERS =
+    `query{
+            users{
+                id
+                username
+                roles
+            }
+        }`
+
 
 const CHANGE_USERNAME =
     `
@@ -72,6 +78,22 @@ export function changeUserName(oldUserName, newUserName, token) {
             console.log(err);
             throw err;
         })
+}
 
+export function deleteUser(id, token) {
+    return graphqlRequest(DELETE_USER, {id}, token)
+        .then(data => data.deleteUsers.nodesDeleted)
+}
 
+export function getUser(username, token) {
+    return graphqlRequest(USER, {username}, token)
+        .then(data => data.users[0])
+}
+
+export function getUsers(token) {
+    return graphqlRequest(USERS, {}, token)
+        .then(data => data.users).catch(err => {
+            console.log(err);
+            throw err;
+        })
 }

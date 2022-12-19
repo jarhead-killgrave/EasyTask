@@ -12,9 +12,14 @@ export default function SignInScreen(props) {
         props.navigation.setOptions({
             headerStyle: {
                 backgroundColor: "#B02F13",
-            }
-        })
-    }, [])
+            },
+            headerTintColor: "#fff",
+            headerTitle: "Sign In",
+            headerTitleStyle: {
+                fontWeight: "bold",
+            },
+        });
+    }, []);
     return (
         <View style={styles.container}>
             <SignIn/>

@@ -29,6 +29,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 32,
         margin: 16,
         alignItems: "center",
+        shadowColor: "black",
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        elevation: 5,
     },
     text: {
         textAlign: "center",

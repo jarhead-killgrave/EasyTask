@@ -1,5 +1,4 @@
 import {graphqlRequest} from "./todoAPI";
-import {Alert} from "react-native";
 
 const TASKS =
     `query($taskListId: ID!) {

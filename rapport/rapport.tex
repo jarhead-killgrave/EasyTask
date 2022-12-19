@@ -151,7 +151,136 @@
         La possibilité a été donnée à l'utilisateur de supprimer une liste de tâches en cliquant sur l'icône \textbf{trash}.
         Mais aussi de renommer une liste de tâches en maintenant pendant quelques secondes l'item de la liste.
 
+        \subsubsection{Gestion des utilisateurs}\label{subsubsec:gestion-des-utilisateurs}
+        Etant donné que chaque utilisateur a son propre compte, il est important de pouvoir non seulement donner la possibilité
+        à l'utilisateur de personnaliser son compte, mais aussi à un administrateur de pouvoir gérer les comptes des utilisateurs
+        dans le cas où un utilisateur ne respecte pas les règles de l'application. Bien que la gestion des utilisateurs
+        puisse être opérée directement dans la base de données, il est plus pratique de pouvoir le faire directement dans l'application.
+        Cela a d'énormes avantages:
+        \begin{itemize}
+            \item L'administrateur n'a pas besoin de connaître les manipulations à faire dans la base de données pour pouvoir gérer les comptes des utilisateurs.
+            \item L'administrateur peut gérer les comptes des utilisateurs sans avoir à se connecter à la base de données\footnote{Toutefois, il doit se connecter à l'application pour pouvoir gérer les comptes des utilisateurs}.
+            \item Le client pour qui l'application a été développée n'a pas besoin d'être un expert en base de données ou informatique pour pouvoir gérer les comptes des utilisateurs.
+            \item Une assistance constante du développeur (ou d'un autre développeur) n'est pas nécessaire durant toute la durée de vie de l'application.
+        \end{itemize}
+        % Afficher l'écran de gestion des utilisateurs
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.45\textwidth]{images/taskList}
+            \caption{Ecran de gestion des utilisateurs}
+            \label{fig:gestion-utilisateurs}
+        \end{figure}
+
+        L'écran de gestion des utilisateurs est accessible depuis tout écran de l'application en cliquant sur le bouton \textbf{Profile}.
+        Depuis cet écran, tout utilisateur peut modifier ses informations personnelles\footnote{Dans cette version, seul le nom de l'utilisateur peut être modifié.} ou bien se déconnecter de l'application.
+        L'administrateur peut aussi gérer les comptes des utilisateurs en cliquant sur le bouton \textbf{Manage users}. De ce fait, l'option
+        \textbf{Manage users} est visible uniquement pour les administrateurs.\\
+        L'écran de gestion des utilisateurs permet à l'administrateur de pouvoir supprimer un compte d'utilisateur,
+        de pouvoir modifier le rôle d'un utilisateur (administrateur ou utilisateur normal)\footnote{La modification du mot de passe d'un utilisateur est interdite pour des raisons de sécurité.\\
+        La création d'un nouveau compte utilisateur passe par l'inscription de l'utilisateur(voir section\ref{subsubsec:authentification}).}.
+        Pour toutes ces actions à part la suppression d'un compte utilisateur, l'administrateur doit cliquer sur l'item de l'utilisateur
+        qu'il souhaite modifier pour avoir plus d'informations sur cet utilisateur.\\
+
+        Bien qu'il a été demandé d'implémenter 2 bonus au choix, nous nous sommes permis d'implémenter d'autres fonctionnalités:
+        \begin{itemize}
+            \item \textbf{Une barre de progression}: Cette barre de progression permet à l'utilisateur de voir l'avancement de ses tâches.
+            \item \textbf{Une interface utilisateur soignée}: L'interface utilisateur a été soignée pour que l'utilisateur puisse avoir une expérience utilisateur agréable.
+        \end{itemize}
+        Ils ont été implémentés pour améliorer l'expérience utilisateur et pour donner une meilleure image de l'application. Pour
+        plus de détails sur ces fonctionnalités, voir les sections\ref{subsubsec:barre-de-progression} et \ref{subsubsec:interface-utilisateur-soignee} qui se
+         trouve dans l'annexe\ref{sec:anexe}.
+
         \section{Détails techniques}\label{sec:details-techniques}
+
+        \subsection{Architecture}\label{subsec:architecture}
+        L'application a été développée en utilisant le framework React Native. React Native est un framework qui permet de développer des applications multiplateformes.
+        Il permet de développer pouvant être exécutées dans différents environnements sans avoir à réécrire le code\footnote{Le code est écrit une seule fois et peut être exécuté sur plusieurs plateformes.}.
+        React Native est basée sur le framework React qui est un framework JavaScript. React Native utilise le langage JavaScript pour le développement de l'application.\\
+        Ainsi le code de l'application inclut les composants
+
+
+
+        \subsection{Composants réutilisables}\label{subsec:composants-reutilisables}
+        Durant le développement de l'application, nous avons remarqué que certains composants étaient réutilisables dans plusieurs
+        écrans. En effet, des composants comme les boutons, les champs de texte, les listes(taches, utilisateurs, listes de tâches)...
+        étaient utilisés dans plusieurs écrans. Pour éviter de répéter le code de ces composants, nous avons décidé de les
+        encapsuler dans des composants personnalisés. Les encapsuler étaient une bonne idée car cela permettait de réduire le code
+        et de le rendre plus lisible, mais aussi d'avoir une certaine cohérence et une certaine uniformité dans l'application.
+
+        \subsubsection{Boutons}\label{subsubsec:boutons}
+        Les boutons sont des composants réutilisables dans plusieurs écrans. Ils sont utilisés pour les actions de l'utilisateur
+        comme : se connecter, se déconnecter, créer une tâche, modifier une tâche, supprimer une tâche et bien d'autres.
+        Pour éviter de répéter le code/style des boutons, nous avons décidé de les encapsuler dans un composant propre à l'application.
+        Ce composant est appelé \textbf{ButtonComponent} et il est défini dans le fichier \textbf{buttonComponent.js}.  Leur
+        fonctionnement et leur utilisation ne sont pas si différents de ceux des boutons de base de React Native.\\
+        % Afficher un exemple de bouton
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.45\textwidth]{images/button}
+            \caption{Exemple de bouton}
+            \label{fig:button}
+        \end{figure}
+
+        La particularité de ce composant est qu'il peut être stylisé en fonction de l'écran dans lequel il est utilisé avec
+        beaucoup plus de facilité et de liberté que les boutons de base de React Native. Par défaut, ce button
+        est arrondi sur les bords et il a une couleur de fond marron.
+
+        \subsubsection{Champs de texte}\label{subsubsec:champs-de-texte}
+        On réutilise les champs de texte à chaque fois qu'on veut demander à l'utilisateur de saisir une information.
+        Ainsi pour ne pas se répéter dans le style que l'on donne à ces champs de texte dans notre application, nous avons
+        décidé de les encapsuler dans un composant propre à l'application. Ce composant est appelé \textbf{Field}
+        et il est défini dans le fichier \textbf{field.js}.\\
+        % Afficher un exemple de champ de texte
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.45\textwidth]{images/field}
+            \caption{Exemple de champ de texte}
+            \label{fig:field}
+        \end{figure}
+        Il n'y a pas de différence notable entre les champs de texte de base de React Native et ce composant. La particularité
+        se résume à l'aspect visuel du champ de texte qui possède un style plus soigné que celui des champs de texte de base de React Native.
+        Un petit effet d'arrondir sur les bords et un effet de flottaison sont ajoutés au champ de texte pour améliorer son aspect visuel.
+
+        \subsubsection{Items}\label{subsubsec:items}
+        Souvent nous avons besoin d'afficher des informations dans une liste. Par exemple, dans la liste des tâches, nous avons besoin
+        d'afficher le nom de la tâche, dans la liste des utilisateurs, nous avons besoin d'afficher le nom de l'utilisateur, ainsi
+        de suite. Ainsi, notre souhait étaient à partir du moment où nous avons besoin d'afficher des informations dans une liste,
+        Les items de toutes les différentes listes devraient avoir un aspect assez commun. Et étant donné que le style de ces items
+        ont été beaucoup travaillé, nous avons décidé de les encapsuler dans un composant propre à l'application. Ce composant est appelé
+        \textbf{Item} et il est défini dans le fichier \textbf{Item.js}.\\
+        % Afficher un exemple d'item
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.45\textwidth]{images/item}
+            \caption{Exemple d'item}
+            \label{fig:item}
+        \end{figure}
+
+        % Décrire l'aspect visuel de l'item
+
+        \subsubsection{Barre de progression}\label{subsubsec:barre-de-progression}
+        Dans une application, nous avons souvent besoin de fournir à l'utilisateur une indication sur l'avancement globale
+        d'une tâche, d'un processus, d'une opération, etc. Nous pourrions bien évidement décrire à l'utilisateur ces
+        avancements en utilisant des mots, mais cela prendrait beaucoup de temps et de place. Mais aussi, cela serait moins
+        parlant que de le lui montrer directement via des barres de progression accompagnées ou non de pourcentages.\\
+        C'est dans cette optique que celle-ci a été développée. Elle est définie dans le fichier \textbf{progressBar.js}.
+        % Afficher un exemple de barre de progression
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width=0.45\textwidth]{images/progress-bar}
+            \caption{Exemple de barre de progression}
+            \label{fig:progress-bar}
+        \end{figure}
+
+
+        % Interet de l'utilisation de composants réutilisables
+        Le plus grand intérêt de l'utilisation de composants réutilisables est que cela nous permet de réduire le temps de développement
+        de notre application. En effet, nous n'avons pas à répéter le code et le style de chaque composant à chaque fois que nous en avons besoin.
+        Nous n'avons qu'à l'importer et à l'utiliser. De plus, cela nous permet de réduire la taille du code source de notre application. Le plus
+        gros gain est celui relatif aux dépendances. En effet, beaucoup de ces composants ont pu déja être développés par d'autres
+        développeurs et ils sont disponibles sur internet. Cependant, cela conduirait à une dépendance forte de notre application à des librairies
+        externes. Le gros inconvénient d'utiliser des composants externes est que nous ne pouvons pas les modifier à notre guise et
+        aussi à partir du moment où ces librairies ne sont plus maintenues, cela pourrait poser des problèmes à notre application.
 
         \section{Conclusion}\label{sec:conclusion}
 

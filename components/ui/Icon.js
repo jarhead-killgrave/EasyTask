@@ -29,7 +29,7 @@ const icons = {
  * @param {boolean} props.pressable true if the icon is pressable, false otherwise
  * @param {StyleSheet} props.style the style of the icon
  */
-export default function Icon(props = {name: "", onPress: () => {}, size: 30, pressable: false, style: {}}) {
+export default function Icon(props = {name: "", onItemPress: () => {}, size: 30, pressableIcon: false, style: {}}) {
 
     const renderIcon = () => {
         return (

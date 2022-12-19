@@ -19,6 +19,7 @@ export default function HomeScreen(props) {
             headerStyle: {
                 backgroundColor: '#B02F13',
             },
+            headerTintColor: '#fff',
         });
     }, [currentUsername]);
 
