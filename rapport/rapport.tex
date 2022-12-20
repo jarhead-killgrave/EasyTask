@@ -196,9 +196,16 @@
         L'application a été développée en utilisant le framework React Native. React Native est un framework qui permet de développer des applications multiplateformes.
         Il permet de développer pouvant être exécutées dans différents environnements sans avoir à réécrire le code\footnote{Le code est écrit une seule fois et peut être exécuté sur plusieurs plateformes.}.
         React Native est basée sur le framework React qui est un framework JavaScript. React Native utilise le langage JavaScript pour le développement de l'application.\\
-        Ainsi le code de l'application inclut les composants
+        Ainsi le code de l'application inclut les composants et la logique métier de l'application.\\
 
+        Au niveau le plus haut de l'architecture, l'application est composée d'un seul composant qui est le composant principal de l'application(\textbf{App.js}).
+        Ce composant est le point d'entrée de l'application. Il est chargé de charger les autres composants de l'application.\\
+        En dessous du composant principal, il y a le composant de navigation. Ce composant est chargé de gérer la navigation entre les différents écrans de l'application.
+        EasyTask utilise cinq (5) écrans principaux dont trois ne sont accessibles que pour les utilisateurs connectés. Chaque écrans charge
+        les composants dont il a besoin pour fonctionner.\\
 
+        Ainsi, l'architecture de l'application est hierarchique. Chaque composant est chargé de gérer une partie de l'application. De
+        ce fait un composant parent contient et affiche ses composants enfants.\\
 
         \subsection{Composants réutilisables}\label{subsec:composants-reutilisables}
         Durant le développement de l'application, nous avons remarqué que certains composants étaient réutilisables dans plusieurs
