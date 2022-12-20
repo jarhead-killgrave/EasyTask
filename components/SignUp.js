@@ -25,12 +25,21 @@ export default function SignUp() {
     // The setUsernameContext function
     const [, setUsernameContext] = useContext(UsernameContext);
 
-    // Test the password strength
+    /**
+     * testPassword checks the strength of the password. It must contain at least 8 characters,
+     * one uppercase letter, one lowercase letter, and one number.
+     *
+     * @param {string} password - The password to be tested.
+     * @returns {boolean} - A boolean representing whether the password is strong enough
+     */
     const testPassword = (password) => {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
         return regex.test(password);
     }
 
+    /**
+     * Makes a request to the server to sign up with the given username and password.
+     */
     const getSignUp = () => {
         setError("");
         if (username !== "" && password !== "" && confirmPassword !== "") {

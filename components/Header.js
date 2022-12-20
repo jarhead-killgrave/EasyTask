@@ -1,40 +1,52 @@
 import React from "react";
-import {StyleSheet, Text, View, Button} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import ButtonComponent from "./ui/ButtonComponent";
 import ProgressBar from "./ui/ProgressBar";
 
 /**
- * Header of the application
- * @param props the properties of the component
- * @constructor the constructor of the component
- * @returns {JSX.Element} the component
+ * A component that renders a header for the to-do list app.
+ *
+ * @param {Object} props - The props for the component.
+ * @param {string} props.title - The title of the to-do list.
+ * @param {number} props.nbDone - The number of completed tasks in the list.
+ * @param {number} props.nbTotal - The total number of tasks in the list.
+ * @param {string[]} props.filterOptions - The options for filtering the list of tasks.
+ * @param {string} props.filter - The currently selected filter option.
+ * @param {function} props.setFilter - A function to set the filter option.
  */
 export default function Header(props) {
+    // Calculate the progress as a percentage of tasks completed
+    const progress = props.nbDone === 0 ? 0 : props.nbDone / props.nbTotal;
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.title}>To-Do List : {props.title}</Text>
-                <ProgressBar style={styles.progressBar} progress={props.nbDone === 0 ? 0 : props.nbDone / props.nbTotal}/>
+                <ProgressBar style={styles.progressBar} progress={progress} />
             </View>
-            <View style={styles.separator}/>
+            <View style={styles.separator} />
             <View style={styles.filterOptions}>
                 {
                     props.filterOptions.map((option, index) => {
-                        return (
-                            <ButtonComponent
-                                style={styles.filterOption}
-                                key={index}
-                                title={option}
-                                color={props.filter === option ? "#B02F13" : "#fff"}
-                                textColor={props.filter === option ? "#fff" : "#B02F13"}
-                                onPress={() => props.setFilter(option)}
-                            />
-                        );
-                    }
+                            // Determine the background and text colors for the filter option button
+                            const bgColor = props.filter === option ? "#B02F13" : "#fff";
+                            const textColor = props.filter === option ? "#fff" : "#B02F13";
+
+                            return (
+                                <ButtonComponent
+                                    style={styles.filterOption}
+                                    key={index}
+                                    title={option}
+                                    color={bgColor}
+                                    textColor={textColor}
+                                    onPress={() => props.setFilter(option)}
+                                />
+                            );
+                        }
                     )
                 }
             </View>
-            <View style={styles.separator}/>
+            <View style={styles.separator} />
         </View>
     );
 }

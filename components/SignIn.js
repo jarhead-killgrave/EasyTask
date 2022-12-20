@@ -5,12 +5,10 @@ import ButtonComponent from "./ui/ButtonComponent";
 import {UsernameContext, TokenContext} from "../context/Context";
 import {signIn} from "../api/crudUser";
 
-
 /**
- * The component that permits to sign in
- *
+ * A component that renders a form for signing in to the app.
  */
-export default function SignIn(){
+export default function SignIn() {
     // The username state
     const [username, setUsername] = useState("");
     // The password state
@@ -19,15 +17,18 @@ export default function SignIn(){
     const [error, setError] = useState("");
     // The visibility state
     const [visible, setVisible] = useState(true);
-    // The setToken function
+    // The setToken function from the TokenContext
     const [, setToken] = useContext(TokenContext);
-    // The setUsernameContext function
+    // The setUsernameContext function from the UsernameContext
     const [, setUsernameContext] = useContext(UsernameContext);
 
-    const getSignIn = () =>{
+    /**
+     * Makes a request to the server to sign in with the given username and password.
+     */
+    const getSignIn = () => {
         setError("");
 
-        if(username !== "" && password !== ""){
+        if (username !== "" && password !== "") {
             setVisible(false);
             signIn(username, password).then(
                 (token) => {
@@ -38,21 +39,20 @@ export default function SignIn(){
             }).finally(() => {
                 setVisible(true);
             });
-        }else{
+        } else {
             setError("Please fill all the fields");
         }
     };
 
     return (
         <View style={styles.container}>
-
-            <Field label="Username" placeholder="Username" onChangeText={(username) => setUsername(username)} value={username}/>
-            <Field label="Password" placeholder="Password" onChangeText={(password) => setPassword(password)} value={password} secureTextEntry={true}/>
-            <ButtonComponent style = {styles.button} title="Sign In" onPress={() => getSignIn()}/>
+            <Field label="Username" placeholder="Username" onChangeText={(username) => setUsername(username)} value={username} />
+            <Field label="Password" placeholder="Password" onChangeText={(password) => setPassword(password)} value={password} secureTextEntry={true} />
+            <ButtonComponent style={styles.button} title="Sign In" onPress={() => getSignIn()} />
             <Text style={styles.error}>
                 {error}
             </Text>
-            <ActivityIndicator size="large" color="#0000ff" animating={!visible}/>
+            <ActivityIndicator size="large" color="#0000ff" animating={!visible} />
         </View>
     );
 }
