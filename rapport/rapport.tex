@@ -79,13 +79,32 @@
         fois connexion et ne pas les perdre ni créer des conflits entre les données de plusieurs utilisateurs.\\
 
         % Afficher les 2 écrans de connexion et d'inscription cote à cote sur la même ligne
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=0.45\textwidth]{images/signIn}
-            \includegraphics[width=0.45\textwidth]{images/signUp}
-            \caption{Ecran de connexion et d'inscription}
-            \label{fig:connexion}
-        \end{figure}
+%        \begin{figure}[H]
+%            \centering
+%            \includegraphics[width=0.45\textwidth]{images/signIn}
+%            \includegraphics[width=0.45\textwidth]{images/signUp}
+%            \caption{Ecran de connexion et d'inscription}
+%            \label{fig:connexion}
+%        \end{figure}
+        % Afficher les 2 écrans de connexion et d'inscription coté à coté sur la même dans 2 figures différentes
+        \begin{minipage}[t]{0.45\textwidth}
+            \begin{figure}[H]
+                \centering
+                \includegraphics[scale=0.2]{images/signIn}
+                \caption{Ecran de connexion}
+                \label{fig:connexion}
+            \end{figure}
+        \end{minipage}
+        \hspace{0.5cm}
+        \begin{minipage}[t]{0.45\textwidth}
+            \begin{figure}[H]
+                \centering
+                \includegraphics[scale=0.2]{images/signUp}
+                \caption{Ecran d'inscription}
+                \label{fig:inscription}
+            \end{figure}
+        \end{minipage}
+        \\
 
         Un utilisateur qui souhaite utiliser l'application doit donc se créer un compte en renseignant son nom d'utilisateur,
         et son mot de passe\footnote{Le mot de passe doit être robuste, c'est à dire qu'il doit contenir au moins 8 caractères, dont au moins
@@ -93,7 +112,7 @@
         dans le cas où celui-ci est piraté. De plus il faudrait dans une version ultérieure de l'application, hasher le mot de passe de l'utilisateur avant
         de le stocker dans la base de données}
         Une fois le compte créé, l'utilisateur peut se connecter à son compte en renseignant ces mêmes
-        informations et accéder à ses tâches.\\
+        informations et accéder à ses tâches.
 
         \subsubsection{Manipulation des tâches}\label{subsubsec:manipulation-des-taches}
         Une fois connecté à son compte, l'utilisateur peut accéder à ses tâches. Il peut alors créer une nouvelle tâche,
@@ -103,7 +122,7 @@
         % Afficher l'écran de gestion des tâches
         \begin{figure}[H]
             \centering
-            \includegraphics[width=0.45\textwidth]{images/tasks}
+            \includegraphics[scale=0.2]{images/tasks}
             \caption{Ecran de gestion des tâches}
             \label{fig:gestion-taches}
         \end{figure}
@@ -139,7 +158,7 @@
         % Afficher l'écran de gestion des listes de tâches
         \begin{figure}[H]
             \centering
-            \includegraphics[width=0.45\textwidth]{images/taskList}
+            \includegraphics[scale=0.15]{images/taskList}
             \caption{Ecran de gestion des listes de tâches}
             \label{fig:gestion-listes}
         \end{figure}
@@ -163,20 +182,35 @@
             \item Le client pour qui l'application a été développée n'a pas besoin d'être un expert en base de données ou informatique pour pouvoir gérer les comptes des utilisateurs.
             \item Une assistance constante du développeur (ou d'un autre développeur) n'est pas nécessaire durant toute la durée de vie de l'application.
         \end{itemize}
-        % Afficher l'écran de gestion des utilisateurs
-        \begin{figure}[H]
+        \vspace{0.5cm}
+        % Afficher l'écran de gestion des utilisateurs pour un utilisateur normal et un administrateur
+        \begin{minipage}[t]{0.45\textwidth}
             \centering
-            \includegraphics[width=0.45\textwidth]{images/taskList}
-            \caption{Ecran de gestion des utilisateurs}
-            \label{fig:gestion-utilisateurs}
-        \end{figure}
+            \begin{figure}[H]
+                \centering
+                \includegraphics[widht=0.5\textwidth]{images/user}
+                \caption{Profil utilisateur}
+                \label{fig:gestion-utilisateurs-normal}
+            \end{figure}
+        \end{minipage}
+        \hspace{0.5cm}
+        \begin{minipage}[t]{0.45\textwidth}
+            \centering
+            \begin{figure}[H]
+                \centering
+                \includegraphics[widht=0.5\textwidth]{images/admin}
+                \caption{Profil administrateur}
+                \label{fig:gestion-utilisateurs-admin}
+            \end{figure}
+        \end{minipage}
+        \vspace{0.5cm}
 
         L'écran de gestion des utilisateurs est accessible depuis tout écran de l'application en cliquant sur le bouton \textbf{Profile}.
         Depuis cet écran, tout utilisateur peut modifier ses informations personnelles\footnote{Dans cette version, seul le nom de l'utilisateur peut être modifié.} ou bien se déconnecter de l'application.
-        L'administrateur peut aussi gérer les comptes des utilisateurs en cliquant sur le bouton \textbf{Manage users}. De ce fait, l'option
-        \textbf{Manage users} est visible uniquement pour les administrateurs.\\
+        L'administrateur peut aussi gérer les comptes des utilisateurs en cliquant sur le bouton \textbf{Liste des utilisateurs}. De ce fait, l'option
+        \textbf{Liste des utilisateurs}.est visible uniquement pour les administrateurs.\\
         L'écran de gestion des utilisateurs permet à l'administrateur de pouvoir supprimer un compte d'utilisateur,
-        de pouvoir modifier le rôle d'un utilisateur (administrateur ou utilisateur normal)\footnote{La modification du mot de passe d'un utilisateur est interdite pour des raisons de sécurité.\\
+        de pouvoir modifier le rôle d'un utilisateur (administrateur ou utilisateur normal) \footnote{La modification du mot de passe d'un utilisateur est interdite pour des raisons de sécurité.\\
         La création d'un nouveau compte utilisateur passe par l'inscription de l'utilisateur(voir section\ref{subsubsec:authentification}).}.
         Pour toutes ces actions à part la suppression d'un compte utilisateur, l'administrateur doit cliquer sur l'item de l'utilisateur
         qu'il souhaite modifier pour avoir plus d'informations sur cet utilisateur.\\
@@ -186,9 +220,7 @@
             \item \textbf{Une barre de progression}: Cette barre de progression permet à l'utilisateur de voir l'avancement de ses tâches.
             \item \textbf{Une interface utilisateur soignée}: L'interface utilisateur a été soignée pour que l'utilisateur puisse avoir une expérience utilisateur agréable.
         \end{itemize}
-        Ils ont été implémentés pour améliorer l'expérience utilisateur et pour donner une meilleure image de l'application. Pour
-        plus de détails sur ces fonctionnalités, voir les sections\ref{subsubsec:barre-de-progression} et \ref{subsubsec:interface-utilisateur-soignee} qui se
-         trouve dans l'annexe\ref{sec:anexe}.
+        Ils ont été implémentés pour améliorer l'expérience utilisateur et pour donner une meilleure image de l'application.
 
         \section{Détails techniques}\label{sec:details-techniques}
 
@@ -278,6 +310,9 @@
             \caption{Exemple de barre de progression}
             \label{fig:progress-bar}
         \end{figure}
+        Cette barre de progression peut être utilisée dans n'importe quel écran de l'application. Elle est très flexible et
+        elle peut être stylisée en fonction de l'écran dans lequel elle est utilisée. Elle peut aussi être utilisée avec ou sans
+        pourcentage.\\
 
 
         % Interet de l'utilisation de composants réutilisables
@@ -290,17 +325,18 @@
         aussi à partir du moment où ces librairies ne sont plus maintenues, cela pourrait poser des problèmes à notre application.
 
         \section{Conclusion}\label{sec:conclusion}
+        En conclusion, le développement de l'application EasyTask en react native a été une expérience enrichissante.
+        Nous avons réussi à mettre en place les fonctionnalités de base de gestion de tâches et d'authentification des utilisateurs,
+        ainsi que des fonctionnalités avancées de gestion des utilisateurs et des listes de tâches.\\
 
-        \section{Bibliographie}\label{sec:bibliographie}
+        Cependant, nous avons également rencontré des difficultés liées à la découverte de react native. Malgré cela,
+        nous avons su surmonter ces obstacles grâce à notre persévérance et notre capacité à trouver des solutions en
+        utilisant les ressources disponibles.\\
 
-        \bibliographystyle{plain}
-
-
-
-
-
-
-
-
-
+        En fin de compte, nous sommes fiers du produit final que nous avons créé et sommes convaincus qu'il sera utile
+        aux utilisateurs pour gérer efficacement leurs tâches quotidiennes. Nous espérons que l'application EasyTask
+        connaîtra un succès durable et continuera à être développée et améliorée au fil du temps.
+        \newpage
+        % Table des figures
+        \listoffigures
 \end{document}

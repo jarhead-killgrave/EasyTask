@@ -81,7 +81,7 @@ export default function TodoLists() {
             </Modal>
             {isLoading ? <ActivityIndicator style={styles.indicator} size="large" color="#0000ff"/> : (
                 <FlatList style={styles.list} data={todoLists}
-                          renderItem={({item}) => <Item item={item} update={updateTodoList} onItemDelete={deleteTodoList} deletableItem={true} pressableItem={true} onItemPress={onPress}/>}
+                          renderItem={({item}) => <Item item={item} onItemDelete={deleteTodoList} deletableItem={true} pressableItem={true} onItemPress={onPress}/>}
                             keyExtractor={item => item.id.toString()}
                 />
             )}

@@ -91,8 +91,8 @@ const styles = StyleSheet.create({
         fontSize: PixelRatio.getFontScale() * 18, // scale the font size based on the pixel density of the screen
     },
     icon: {
-        width: PixelRatio.getPixelSizeForLayoutSize(20), // scale the icon size based on the pixel density of the screen
-        height: PixelRatio.getPixelSizeForLayoutSize(20), // scale the icon size based on the pixel density of the screen
+        width: PixelRatio.getFontScale() * 20, // scale the icon size based on the pixel density of the screen
+        height: PixelRatio.getFontScale() * 20, // scale the icon size based on the pixel density of the screen
     },
     checkedText: {
         textDecorationLine: "line-through",
