@@ -1,13 +1,14 @@
 import React, {useState} from "react";
 import { StatusBar } from 'expo-status-bar';
-import {StyleSheet} from 'react-native';
 import {FeedbackContext, TokenContext, UsernameContext} from "./context/Context";
 import Navigation from "./navigation/Navigation";
 
-export default function App() {
+export default function App(){
     const [token, setToken] = useState(null);
     const [username, setUsername] = useState(null);
     const [feedback, setFeedback] = useState(null);
+
+
 
   return (
         <UsernameContext.Provider value={[username, setUsername]}>
@@ -20,11 +21,3 @@ export default function App() {
         </UsernameContext.Provider>
     );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center'
-    },
-});

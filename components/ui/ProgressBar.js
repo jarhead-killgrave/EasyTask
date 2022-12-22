@@ -1,13 +1,21 @@
-import { StyleSheet, View, Text, Dimensions } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
 
-export default function ProgressBar(props={progress: 0, style: {}}) {
-
+/**
+ * ProgressBar is a React native component that displays a progress bar.
+ *
+ * @param {Object} props - The properties for the component.
+ * @param {number} props.progress - The current progress of the progress bar, between 0 and 1.
+ * @param {Object} [props.style] - The style object for the container element.
+ * @return {ReactElement} - The rendered progress bar element.
+ */
+export default function ProgressBar(props) {
+    // Calculate the percentage of progress
     const percentage = props.progress * 100;
 
     return (
         <View style={[styles.container, props.style]}>
-            <View style={[styles.progress, { width: `${percentage}%` }]}>
+            <View style={[styles.progress, {width: `${percentage}%`}]}>
                 <Text style={styles.progressText}>{percentage.toFixed(0)}%</Text>
             </View>
         </View>

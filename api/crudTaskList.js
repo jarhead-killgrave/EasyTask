@@ -1,5 +1,9 @@
 import {graphqlRequest} from "./todoAPI";
 
+/**
+ * GraphQL query that  retrieves a list of task lists owned by a given user.
+ * @type {string}
+ */
 const TASK_LISTS =
     `query($username:String!){
          taskLists(
@@ -10,6 +14,10 @@ const TASK_LISTS =
             }
     }`
 
+/**
+ * GraphQL's mutation that creates a new task list for a given user.
+ * @type {string}
+ */
 const CREATE_TASK_LIST =
     `mutation($title:String!, $username:String!){
         createTaskLists(
@@ -30,6 +38,10 @@ const CREATE_TASK_LIST =
         }
     }`
 
+/**
+ * GraphQL's mutation that deletes a specific task list.
+ * @type {string}
+ */
 const DELETE_TASK_LIST =
     `mutation($id: ID!) {
         deleteTaskLists(where: { id: $id }) {
@@ -37,35 +49,16 @@ const DELETE_TASK_LIST =
         }
     }`
 
-const UPDATE_TASK_LIST =
-    `mutation($id:ID!, $title:String!){
-        updateTaskList(
-            where: { id: $id },
-            input: { title: $title }
-        ){
-            taskLists{
-                id
-                title
-                owner{
-                    username
-                }
-            }
-        }
-    }`
-
-
-
 
 /**
- * getTaskLists is a function that sends a GraphQL query to a server to get a list of task lists.
- *
- * @param {string} username - The username of the user whose task lists should be retrieved.
- * @param {string} token - The authentication token to include in the request headers.
- * @returns {Promise} A promise that is resolved with the list of task lists.
- *                    If an error occurs, the promise is rejected with the error.
+ * getTaskLists is a function that retrieves a list of task lists owned by a given user using a GraphQL query.
+ * @param {string} username - The username of the user whose task lists are to be retrieved.
+ * @param {string} token - The authentication token to include in the header of the request.
+ * @return {Promise<Array>} - A promise that resolves to an array of task lists.
+ * @throws {Error} - If an error occurs while making the request or parsing the response
  */
 export function getTaskLists(username, token) {
-    return graphqlRequest(TASK_LISTS, { username }, token)
+    return graphqlRequest(TASK_LISTS, {username}, token)
         .then(data => data.taskLists)
         .catch(error => {
             throw error;
@@ -73,16 +66,15 @@ export function getTaskLists(username, token) {
 }
 
 /**
- * createTaskList is a function that sends a GraphQL mutation to a server to create a new task list.
- *
+ * createTaskList is a function that creates a new task list for a given user using a GraphQL mutation.
  * @param {string} title - The title of the new task list.
- * @param {string} username - The username of the user who is creating the task list.
- * @param {string} token - The authentication token to include in the request headers.
- * @returns {Promise} A promise that is resolved with the new task list.
- *                    If an error occurs, the promise is rejected with the error.
+ * @param {string} username - The username of the user who will own the new task list.
+ * @param {string} token - The authentication token to include in the header of the request.
+ * @return {Promise<Object>} - A promise that resolves to the newly created task list.
+ * @throws {Error} - If an error occurs while making the request or parsing the response.
  */
 export function createTaskList(title, username, token) {
-    return graphqlRequest(CREATE_TASK_LIST, { title, username }, token)
+    return graphqlRequest(CREATE_TASK_LIST, {title, username}, token)
         .then(data => data.createTaskLists.taskLists[0])
         .catch(error => {
             throw error;
@@ -90,28 +82,18 @@ export function createTaskList(title, username, token) {
 }
 
 /**
- * Delete a task list
- * @param {string} id
- * @param {string} token
- * @returns {Promise<Response>}
- * @throws {Error}
+ * deleteTaskList is a function that deletes a specific task list using a GraphQL mutation.
+ * @param {string} id - The ID of the task list to delete.
+ * @param {string} token - The authentication token to include in the header of the request.
+ * @return {Promise<number>} - A promise that resolves to the number of task lists deleted.
+ * @throws {Error} - If an error occurs while making the request or parsing the response.
  */
 export function deleteTaskList(id, token) {
-    return graphqlRequest(DELETE_TASK_LIST, { id: id }, token)
+    return graphqlRequest(DELETE_TASK_LIST, {id: id}, token)
         .then(data => data.deleteTaskLists.nodesDeleted)
+        .catch(error => {
+            throw error;
+        });
 }
-
-/**
- * Update a task list
- * @param {string} id
- * @param {string} title
- * @param {string} token
- */
-export function updateTaskList(id, title, token) {
-    return graphqlRequest(UPDATE_TASK_LIST, { id: id, title: title }, token)
-        .then(data => data.updateTaskList.taskLists[0])
-}
-
-
 
 // Path: api/crudTask.js

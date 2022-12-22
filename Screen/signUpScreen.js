@@ -14,6 +14,11 @@ export default function SignUpScreen(props) {
         props.navigation.setOptions({
             headerStyle: {
                 backgroundColor: "#B02F13",
+            },
+            headerTintColor: "#fff",
+            headerTitle: "Sign Up",
+            headerTitleStyle: {
+                fontWeight: "bold",
             }
         })
     }, [])

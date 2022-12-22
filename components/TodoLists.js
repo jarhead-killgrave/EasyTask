@@ -1,11 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
-import {View, Text, StyleSheet, ActivityIndicator, Modal} from "react-native";
+import {View, Text, StyleSheet, ActivityIndicator, Modal, FlatList} from "react-native";
 import {UsernameContext, TokenContext} from "../context/Context";
-import {getTaskLists, createTaskList, updateTaskList, deleteTaskList} from "../api/crudTaskList";
-import ListItem from "./ui/ListItem";
+import {getTaskLists, createTaskList, deleteTaskList} from "../api/crudTaskList";
 import AddInput from "./ui/AddInput";
 import Icon from "./ui/Icon";
 import TodoList from "./TodoList";
+import Item from "./ui/Item";
 
 /**
  * The todoLists component
@@ -38,32 +38,24 @@ export default function TodoLists() {
     // Create a new todoList
     const createNewTodoList = (newTodoList) => {
         // Call the createTaskList function with the token, username and the content of the new todoList
+        setIsLoading(true);
         createTaskList(newTodoList, username, token).then(data => {
             // Add the new todoList to the list of todoLists
             setTodoLists([...todoLists, {id : data.id, content : data.title}]);
-        })
-    }
-
-    // Update a todoList
-    const updateTodoList = (id, name) => {
-        // Call the updateTaskList function with the token, username, the id of the todoList and the new content
-        updateTaskList(username, token, id, name).then(data => {
-            // Update the todoList in the list of todoLists
-            setTodoLists(todoLists.map(todoList => {
-                if (todoList.id === id) {
-                    return {id : data.id, content : data.title};
-                }
-                return todoList;
-            }));
+        }).then(() => {
+            setIsLoading(false);
         })
     }
 
     // Delete a todoList
     const deleteTodoList = (id) => {
         // Call the deleteTaskList function with the token, username and the id of the todoList
+        setIsLoading(true);
         deleteTaskList(id, token).then(data => {
             // Delete the todoList from the list of todoLists
             setTodoLists(todoLists.filter(todoList => todoList.id !== id));
+        }).then(() => {
+            setIsLoading(false);
         })
     }
 
@@ -88,7 +80,10 @@ export default function TodoLists() {
                 <TodoList id={listId} title={listName} />
             </Modal>
             {isLoading ? <ActivityIndicator style={styles.indicator} size="large" color="#0000ff"/> : (
-                <ListItem data={todoLists} update={updateTodoList} onItemDelete={deleteTodoList} deletableItem={true} pressableItem={true} onItemPress={onPress}/>
+                <FlatList style={styles.list} data={todoLists}
+                          renderItem={({item}) => <Item item={item} onItemDelete={deleteTodoList} deletableItem={true} pressableItem={true} onItemPress={onPress}/>}
+                            keyExtractor={item => item.id.toString()}
+                />
             )}
             <AddInput placeholder="New todoList" onSubmit={createNewTodoList} title={"Add"}/>
         </View>
@@ -103,6 +98,10 @@ const styles = StyleSheet.create({
         width: '100%',
         padding: 20,
         backgroundColor: "#f5f5f5"
+    },
+    list: {
+        width: '100%',
+        marginBottom: 20
     },
     listItem: {
         flex : 8

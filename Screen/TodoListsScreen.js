@@ -20,17 +20,7 @@ export default function TodoListsScreen(props) {
                 backgroundColor: "#B02F13",
             },
             headerTintColor: "#fff",
-            headerRight: () => (
-                <Icon
-                    name="share"
-                    onPress={() => {
-                        console.log("partager")
-                    }
-                    }
-                    pressable={true}
-                    size={30}
-                />
-            ),
+
         });
     }, []);
 

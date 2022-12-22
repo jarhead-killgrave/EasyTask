@@ -1,5 +1,5 @@
-import React  from "react";
-import {View, StyleSheet, Image, TouchableOpacity} from "react-native";
+import React from "react";
+import {Image, TouchableOpacity} from "react-native";
 
 
 // The name of each icon and the path to the image
@@ -14,23 +14,27 @@ const icons = {
     "arrow-left": require("../../assets/svg/fi-rr-arrow-left.svg"),
     "arrow-right": require("../../assets/svg/fi-rr-arrow-right.svg"),
     "arrow-up": require("../../assets/svg/fi-rr-arrow-up.svg"),
-    "list" : require("../../assets/svg/fi-rr-list.svg"),
-    "user" : require("../../assets/svg/fi-rr-user.svg"),
+    "list": require("../../assets/svg/fi-rr-list.svg"),
+    "user": require("../../assets/svg/fi-rr-user.svg"),
 
 }
 
 /**
- * A component that displays an icon
+ * Icon is a React native component that displays an image icon.
  *
- * @param props the properties of the component
- * @param {string} props.name the name of the icon
- * @param {function} props.onPress the function to call when the icon is pressed
- * @param {number} props.size the size of the icon
- * @param {boolean} props.pressable true if the icon is pressable, false otherwise
- * @param {StyleSheet} props.style the style of the icon
+ * @param {Object} props - The properties for the component.
+ * @param {string} props.name - The name of the icon to display.
+ * @param {number} props.size - The size of the icon in pixels.
+ * @param {Object} props.style - The style object for the icon.
+ * @param {boolean} props.pressable - Whether the icon should be pressable.
+ * @param {function} props.onPress - The function to call when the icon is pressed.
+ * @return {ReactElement} - The rendered icon element.
  */
-export default function Icon(props = {name: "", onPress: () => {}, size: 30, pressable: false, style: {}}) {
-
+export default function Icon(props) {
+    /**
+     * Renders the icon image element.
+     * @return {ReactElement} - The rendered icon image element.
+     */
     const renderIcon = () => {
         return (
             <Image
@@ -42,7 +46,9 @@ export default function Icon(props = {name: "", onPress: () => {}, size: 30, pre
 
     // Return the icon
     return (
-        // Render a pressable icon or a non-pressable icon(render is a promise)
-        props.pressable ? <TouchableOpacity onPress={props.onPress}>{renderIcon()}</TouchableOpacity> : renderIcon()
+        // Render a pressable icon or a non-pressable icon
+        props.pressable
+            ? <TouchableOpacity onPress={props.onPress}>{renderIcon()}</TouchableOpacity>
+            : renderIcon()
     );
 }

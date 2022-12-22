@@ -1,12 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Modal, StyleSheet, Text, View} from "react-native";
-import todoData from "../Helpers/todoData";
-import {getTasks, createTask, updateTask, deleteTask, switchTask, markAllTask} from "../api/crudTask";
+import {FlatList, Modal, StyleSheet, Text, View, ActivityIndicator} from "react-native";
+import {getTasks, createTask, deleteTask, switchTask, markAllTask} from "../api/crudTask";
 import AddInput from "./ui/AddInput";
-import ListItem from "./ui/ListItem";
 import Header from "./Header";
 import ButtonComponent from "./ui/ButtonComponent";
 import {FeedbackContext, TokenContext} from "../context/Context";
+import Item from "./ui/Item";
 /**
  * Component that displays a list of TodoItem
  *
@@ -23,6 +22,7 @@ export default function TodoList(props={id: -1, title: ""}) {
     const [filteredTodos, setFilteredTodos] = useState(todos);
     // Liste the options for the filter
     const filterOptions = ["all", "done", "todo"];
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const [token,] = useContext(TokenContext);
@@ -30,9 +30,11 @@ export default function TodoList(props={id: -1, title: ""}) {
 
     // Update the list of todoItems
     useEffect(() => {
+        setIsLoading(true);
         getTasks(idList, token)
             .then(data => {
                 setTodos(data);
+                setIsLoading(false);
             })
             .catch(error => {
                 setFeedBack({type: "error", message: "Error while loading the tasks from the server \n" + error.message});
@@ -88,6 +90,7 @@ export default function TodoList(props={id: -1, title: ""}) {
 
     // Switch the value of the done property of a todoItem
     const toggleTodo = (id, done) => {
+        setIsLoading(true);
         switchTask(id, done, token)
             .then(data => {
                 const newTodos = todos.map((todo) => {
@@ -98,6 +101,7 @@ export default function TodoList(props={id: -1, title: ""}) {
                     }
                 });
                 setTodos(newTodos);
+                setIsLoading(false);
             })
             .catch(error => {
                 setFeedBack({type: "error", message: "Error while updating a task on the server \n" + error.message});
@@ -131,8 +135,12 @@ export default function TodoList(props={id: -1, title: ""}) {
                     nbDone={count} nbTotal={todos.length} filter={filter} setFilter={setFilter}
                     filterOptions={filterOptions}/>
 
-            <ListItem data={filteredTodos} deletableItem={true} onItemDelete={deleteTodo} checkableItem={true}
-                      onItemCheck={toggleTodo} pressableItem={false} style={styles.listItem} />
+            {isLoading && <ActivityIndicator style={styles.listItem} size="large" color="#0000ff"/>}
+            {!isLoading && <FlatList data={filteredTodos} renderItem={({item}) => (
+                <Item item={item} deletableItem={true} onItemDelete={deleteTodo} checkableItem={true} onItemCheck={toggleTodo} checked={item.done}/>
+            )} keyExtractor={item => item.id.toString()} style={styles.listItem} />
+            }
+
 
             <AddInput style={styles.addInput}
                       title={"Add"}  placeholder={"Add a new todo"} onSubmit={addTodo}/>
@@ -172,6 +180,7 @@ const styles = StyleSheet.create({
     },
     listItem: {
         flex: 8,
+        width: '100%',
     },
     addInput: {
         flex: 1,
