@@ -31,9 +31,10 @@
         \HRule \\[0.4cm]
         { \huge \bfseries Rapport de développement: EasyTasK\\[0.15cm] }
         \HRule \\[1.5cm]
-        KITSOUKOU Manne Emile\\[1cm]
-        ALSEINY
+        KITSOUKOU Manne Emile : 22013393\\[1cm]
+        DIALLO Elhadj Alseiny : 22011830
         \\[1cm]
+        Enseignant : \textbf{LAMOTTE Jean-Luc}\\
         \textbf{Licence 3 Informatique}\\
         \today \\ [1cm]
     \end{titlepage}
@@ -323,6 +324,13 @@
         développeurs et ils sont disponibles sur internet. Cependant, cela conduirait à une dépendance forte de notre application à des librairies
         externes. Le gros inconvénient d'utiliser des composants externes est que nous ne pouvons pas les modifier à notre guise et
         aussi à partir du moment où ces librairies ne sont plus maintenues, cela pourrait poser des problèmes à notre application.
+
+        \subsection{Base de données}
+        Durant le développement, nous avons utilisé une base de donnée non traditionnelle : \textbf{GraphQL} pour conserver
+        de façon persistance nos données. Toutefois, nous avions remarqué que les requêtes vers cette base données était assez similaire.
+        D'où nous avons utilisé une fonction générique pour interroger la base et ne pas repeter enormement de code. Au final
+        Les différentes requêtes vers la base a été simplifier pour chaque fonction spécifique. De plus, les requêtes ont
+        été séparées en différents fichiers pour ne pas tout mélanger à l'image d'une macédoine.
 
         \section{Conclusion}\label{sec:conclusion}
         En conclusion, le développement de l'application EasyTask en react native a été une expérience enrichissante.
