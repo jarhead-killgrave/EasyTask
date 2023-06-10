@@ -33,6 +33,8 @@ jobs:
               pullNumber: context.payload.pull_request.number
             });
             
+            console.log(data);
+            
             const requiredApprovers = ['jarhead-killgrave', 'alseiny20']
             const reviews = data.repository.pullRequest.reviews.nodes;
             const approvedByRequired = requiredApprovers.every(approver => {
