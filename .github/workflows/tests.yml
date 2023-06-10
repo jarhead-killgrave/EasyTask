@@ -12,10 +12,25 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { data: reviews } = await github.pulls.listReviews({
+            const { data } = await github.graphql(`
+              query($owner: String!, $repo: String!, $pullNumber: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  pullRequest(number: $pullNumber) {
+                    reviews(first: 100) {
+                      nodes {
+                        author {
+                          login
+                        }
+                        state
+                      }
+                    }
+                  }
+                }
+              }
+            `, {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number
+              pullNumber: context.payload.pull_request.number
             });
             
             const requiredApprovers = ['jarhead-killgrave', 'alseiny20']
