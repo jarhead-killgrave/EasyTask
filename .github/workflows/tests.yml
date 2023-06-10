@@ -1,0 +1,33 @@
+name: Vérifier les validations de pull request
+
+on:
+  pull_request:
+
+jobs:
+  verify_pr_approvals:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Vérifier les validations
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const { data: reviews } = await github.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number
+            });
+            
+            const requiredApprovers = ['jarhead-killgrave', 'alseiny20']
+            const approvedByRequired = requiredApprovers.every(approver => {
+              return reviews.some(review => review.user.login === approver && review.state === 'APPROVED');
+            });
+            
+            if (approvedByRequired) {
+              console.log('Les utilisateurs spécifiques ont approuvé la pull request.');
+            } else {
+              console.log('La pull request n\'a pas été approuvée par tous les utilisateurs spécifiés.');
+              // Vous pouvez choisir d'échouer l'action ici pour empêcher la fusion.
+              // Pour ce faire, décommentez la ligne suivante.
+              throw new Error('La pull request n\'a pas été approuvée par tous les utilisateurs spécifiés.');
+            }
