@@ -34,8 +34,9 @@ jobs:
             });
             
             const requiredApprovers = ['jarhead-killgrave', 'alseiny20']
+            const reviews = data.repository.pullRequest.reviews.nodes;
             const approvedByRequired = requiredApprovers.every(approver => {
-              return reviews.some(review => review.user.login === approver && review.state === 'APPROVED');
+              return reviews.some(review => review.author.login === approver && review.state === 'APPROVED');
             });
             
             if (approvedByRequired) {
