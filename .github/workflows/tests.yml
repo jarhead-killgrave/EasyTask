@@ -1,22 +1,22 @@
-name: Required review check
+name: main
 on:
-  pull_request_review:
-  pull_request:
-    types: [ opened, reopened, synchronize ]
+  workflow_dispatch:
 
 jobs:
-  check:
-    name: Checking required reviews
+  build:
+    name: build
     runs-on: ubuntu-latest
-
-    # GitHub should provide a "pull_request_review_target", but they don't and
-    # the action will fail if run on a forked PR.
-
     steps:
-      - uses: Automattic/action-required-review@v3
+      - name: Build
+        run: echo building
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: trstringer/manual-approval@v1
         with:
-          token: ${{ secrets.ACCESS_TOKEN }}
-          requirements: |
-            - paths: unmatched
-              teams:
-                - jarhead-killgrave
+          secret: ${{ secrets.ACCESS_TOKEN }}
+          approvers: jarhead-killgrave
+      - name: Deploy to production
+        run: echo deploying
