@@ -1,18 +1,16 @@
-name: Vérifier les validations de pull request
+name: Test 65 # Related to https://stackoverflow.com/questions/18995854/how-can-i-use-github-api-to-get-all-tags-or-releases-for-a-project
 
 on:
-  pull_request:
+  push:
 
 jobs:
-  verify_pr_approvals:
+  job1:
     runs-on: ubuntu-latest
-
     steps:
       - run: |
-          curl -L \
+          curl \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer $TOKEN" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            --http2 https://api.github.com/repos/jarhead-killgrave/EasyTask/tags
+            https://api.github.com/repos/GuillaumeFalourd/poc-github-actions/tags
         env:
           TOKEN: ${{ secrets.ACCESS_TOKEN }}
