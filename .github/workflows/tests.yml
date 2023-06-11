@@ -1,17 +1,23 @@
-name: Test 65 # Related to https://stackoverflow.com/questions/18995854/how-can-i-use-github-api-to-get-all-tags-or-releases-for-a-project
-
+name: Required review check
 on:
-  push:
+  pull_request_review:
+  pull_request:
+    types: [ opened, reopened, synchronize ]
 
 jobs:
-  job1:
+  check:
+    name: Checking required reviews
     runs-on: ubuntu-latest
+
+    # GitHub should provide a "pull_request_review_target", but they don't and
+    # the action will fail if run on a forked PR.
+    if: github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
+
     steps:
-      - run: |
-          curl \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            --http3 https://api.github.com/repos/jarhead-killgrave/EasyTask/tags
-        env:
-          TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      - uses: Automattic/action-required-review@v3
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          requirements: |
+            - paths: unmatched
+              teams:
+                - jarhead-killgrave
