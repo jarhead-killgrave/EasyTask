@@ -7,7 +7,7 @@ jobs:
   verify_pr_approvals:
     runs-on: ubuntu-latest
 
-        steps:
+    steps:
       - run: |
           curl \
             -H "Accept: application/vnd.github+json" \
