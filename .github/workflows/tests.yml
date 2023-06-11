@@ -11,6 +11,6 @@ jobs:
           curl \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer $TOKEN" \
-            https://api.github.com/repos/GuillaumeFalourd/poc-github-actions/tags
+            --http1.1 https://api.github.com/repos/GuillaumeFalourd/poc-github-actions/tags
         env:
           TOKEN: ${{ secrets.ACCESS_TOKEN }}
