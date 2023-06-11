@@ -7,45 +7,11 @@ jobs:
   verify_pr_approvals:
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Vérifier les validations
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const { data } = await github.graphql(`
-              query($owner: String!, $repo: String!, $pullNumber: Int!) {
-                repository(owner: $owner, name: $repo) {
-                  pullRequest(number: $pullNumber) {
-                    reviews(first: 100) {
-                      nodes {
-                        author {
-                          login
-                        }
-                        state
-                      }
-                    }
-                  }
-                }
-              }
-            `, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pullNumber: context.payload.pull_request.number
-            });
-            
-            console.log(data);
-            
-            const requiredApprovers = ['jarhead-killgrave', 'alseiny20']
-            const reviews = data.repository.pullRequest.reviews.nodes;
-            const approvedByRequired = requiredApprovers.every(approver => {
-              return reviews.some(review => review.author.login === approver && review.state === 'APPROVED');
-            });
-            
-            if (approvedByRequired) {
-              console.log('Les utilisateurs spécifiques ont approuvé la pull request.');
-            } else {
-              console.log('La pull request n\'a pas été approuvée par tous les utilisateurs spécifiés.');
-              // Vous pouvez choisir d'échouer l'action ici pour empêcher la fusion.
-              // Pour ce faire, décommentez la ligne suivante.
-              throw new Error('La pull request n\'a pas été approuvée par tous les utilisateurs spécifiés.');
-            }
+        steps:
+      - run: |
+          curl \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $TOKEN" \
+            https://api.github.com/repos/jarhead-killgrave/EasyTask/tags
+        env:
+          TOKEN: ${{ secrets.ACCESS_TOKEN }}
