@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: get the count of requested reviewers
         run: |
-          length=$(echo $requested_reviewers | jq .)
+          length=$(echo $requested_reviewers)
           echo "length = $length"
         env:
           requested_reviewers: ${{ toJson(github.event.pull_request.requested_reviewers) }}
