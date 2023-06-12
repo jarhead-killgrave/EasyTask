@@ -1,22 +1,15 @@
 name: main
-on:
-  workflow_dispatch:
+on: push
 
 jobs:
   build:
     name: build
     runs-on: ubuntu-latest
     steps:
-      - name: Build
-        run: echo building
-  deploy:
-    name: deploy
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ secrets.ACCESS_TOKEN }}
-          approvers: jarhead-killgrave
-      - name: Deploy to production
-        run: echo deploying
+      - name: get the count of requested reviewers
+        run: |
+          length=$(echo $requested_reviewers | jq '. | length')
+          echo "length = $length"
+        env:
+          requested_reviewers: ${{ toJson(github.event.pull_request.requested_reviewers) }}
+
